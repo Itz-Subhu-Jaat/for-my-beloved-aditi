@@ -358,29 +358,24 @@ function ChatSlideshowSection() {
   )
 }
 
-/* ─────────── First Kiss Section ─────────── */
+/* ─────────── First Kiss Section - Lovely Chat Bubbles ─────────── */
 function FirstKissSection() {
-  const screenshots = [
-    { src: '/chat-screenshots/Screenshot_20260413-110629.jpg', caption: 'The moment that started it all...' },
-    { src: '/chat-screenshots/Screenshot_20260413-111157.jpg', caption: 'My heart was racing...' },
-    { src: '/chat-screenshots/Screenshot_20260413-111608.jpg', caption: 'When words fell short...' },
-    { src: '/chat-screenshots/Screenshot_20260413-111625.jpg', caption: 'And then it happened 💋' },
-    { src: '/chat-screenshots/Screenshot_20260413-111633.jpg', caption: 'Our first kiss... forever in my heart' },
-    { src: '/chat-screenshots/Screenshot_20260413-111642.jpg', caption: 'The most magical moment 💕' },
+  const kissMessages = [
+    { sender: 'Hubby', text: '1 emoji ustime bhejna jach rha tha but mene bheja nhi 😊', time: '3:45 AM' },
+    { sender: 'Hubby', text: 'Ustime chat vale time', time: '3:45 AM' },
+    { sender: 'Aditi', text: 'Konsa emoji? 🤔', time: '3:45 AM' },
+    { sender: 'Hubby', text: '🤝❤️', time: '3:45 AM' },
+    { sender: 'Hubby', text: '😘', time: '3:45 AM', isKiss: true },
+    { sender: 'Aditi', text: '😂', time: '3:45 AM' },
+    { sender: 'Hubby', text: '😊', time: '3:45 AM' },
   ]
-
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [showFull, setShowFull] = useState(false)
-
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % screenshots.length)
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + screenshots.length) % screenshots.length)
 
   return (
     <section className="relative py-24 md:py-32 px-4 overflow-hidden">
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-pink-900/5 via-transparent to-rose-900/5" />
       </div>
-      <div className="max-w-4xl mx-auto relative z-10">
+      <div className="max-w-2xl mx-auto relative z-10">
         <AnimatedSection className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light mb-6">
             <span className="text-lg">💋</span>
@@ -388,89 +383,115 @@ function FirstKissSection() {
           </div>
           <h2 className="text-3xl md:text-5xl font-bold mb-4"><GradientText>The First Kiss</GradientText></h2>
           <p className="text-pink-300/60 text-lg max-w-2xl mx-auto">
-            Jab pehli baar hotho ne hotho ko chua — duniya ruk gayi thi, sirf hum do the
+            Jab pehli baar 😘 bheja — duniya ruk gayi thi, sirf hum do the
           </p>
         </AnimatedSection>
 
         <AnimatedSection delay={0.2}>
           <div className="glass rounded-3xl overflow-hidden border border-pink-500/15 shadow-[0_0_30px_rgba(236,72,153,0.15)]">
-            {/* Slideshow */}
-            <div className="relative">
-              <div className="relative aspect-[9/16] md:aspect-[3/4] max-h-[600px] mx-auto bg-black/30 overflow-hidden">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentSlide}
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -50 }}
-                    transition={{ duration: 0.4 }}
-                    className="absolute inset-0 flex items-center justify-center cursor-pointer"
-                    onClick={() => setShowFull(!showFull)}
-                  >
-                    <img
-                      src={screenshots[currentSlide].src}
-                      alt={`First kiss chat ${currentSlide + 1}`}
-                      className={`transition-all duration-500 ${showFull ? 'w-full h-full object-contain' : 'w-full h-full object-contain'}`}
-                    />
-                  </motion.div>
-                </AnimatePresence>
-
-                {/* Love decorations on image */}
-                <div className="absolute top-3 left-3 text-xl opacity-50 animate-pulse">💋</div>
-                <div className="absolute top-3 right-3 text-xl opacity-50 animate-pulse" style={{ animationDelay: '0.5s' }}>💕</div>
-                <div className="absolute bottom-16 left-3 text-sm opacity-40">♥</div>
-                <div className="absolute bottom-16 right-3 text-sm opacity-40">♥</div>
+            {/* Chat header */}
+            <div className="flex items-center gap-3 p-4 md:p-5 border-b border-pink-500/10 bg-gradient-to-r from-pink-500/5 to-rose-500/5">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-white text-sm font-bold shadow-[0_0_15px_rgba(236,72,153,0.3)]">A</div>
+              <div>
+                <p className="text-pink-200 font-medium text-sm">🌸Aditi🌸</p>
+                <p className="text-pink-400/30 text-[10px]">Online • 12 Jan 2026</p>
               </div>
-
-              {/* Caption */}
-              <div className="p-4 text-center bg-gradient-to-r from-pink-500/5 to-rose-500/5 border-t border-pink-500/10">
-                <p className="text-pink-200/80 text-sm md:text-base italic">{screenshots[currentSlide].caption}</p>
+              <div className="ml-auto flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-green-400/60 animate-pulse" />
+                <span className="text-green-400/50 text-[10px]">connected</span>
               </div>
-
-              {/* Navigation */}
-              {screenshots.length > 1 && (
-                <div className="absolute bottom-20 left-0 right-0 flex items-center justify-between px-3 pointer-events-none">
-                  <button onClick={prevSlide} className="pointer-events-auto w-9 h-9 rounded-full bg-black/40 border border-pink-500/20 flex items-center justify-center text-pink-300/70 hover:bg-pink-500/30 hover:text-pink-200 transition-all backdrop-blur-sm">
-                    <span className="text-lg">‹</span>
-                  </button>
-                  <button onClick={nextSlide} className="pointer-events-auto w-9 h-9 rounded-full bg-black/40 border border-pink-500/20 flex items-center justify-center text-pink-300/70 hover:bg-pink-500/30 hover:text-pink-200 transition-all backdrop-blur-sm">
-                    <span className="text-lg">›</span>
-                  </button>
-                </div>
-              )}
             </div>
 
-            {/* Dot indicators */}
-            <div className="flex items-center justify-center gap-2 py-3 bg-black/20">
-              {screenshots.map((_, idx) => (
-                <button key={idx} onClick={() => setCurrentSlide(idx)}
-                  className={`rounded-full transition-all duration-300 ${
-                    idx === currentSlide
-                      ? 'bg-pink-400 w-6 h-2'
-                      : 'bg-pink-500/30 w-2 h-2 hover:bg-pink-500/50'
-                  }`} />
+            {/* Chat messages */}
+            <div className="p-4 md:p-6 space-y-3">
+              {/* Date divider */}
+              <div className="flex items-center gap-3 py-2">
+                <div className="flex-1 h-px bg-pink-500/10" />
+                <span className="text-pink-400/30 text-[10px] px-2">12 January 2026</span>
+                <div className="flex-1 h-px bg-pink-500/10" />
+              </div>
+
+              {kissMessages.map((msg, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.3, delay: i * 0.1, ease: 'easeOut' }}
+                  className={`flex ${msg.sender === 'Hubby' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div className={`max-w-[80%] ${msg.sender === 'Hubby' ? 'order-2' : 'order-1'}`}>
+                    {msg.sender === 'Aditi' && (
+                      <div className="flex items-center gap-2 mb-1 ml-1">
+                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-white text-[8px] font-bold">A</div>
+                        <span className="text-pink-400/30 text-[10px]">Aditi</span>
+                      </div>
+                    )}
+                    <div
+                      className={`rounded-2xl px-4 py-2.5 md:px-5 md:py-3 ${
+                        msg.isKiss
+                          ? 'bg-gradient-to-br from-pink-500/40 to-rose-500/30 border-2 border-pink-400/40 rounded-br-sm shadow-[0_0_25px_rgba(236,72,153,0.4)]'
+                          : msg.sender === 'Hubby'
+                            ? 'bg-gradient-to-br from-pink-500/30 to-rose-500/20 border border-pink-500/20 rounded-br-sm'
+                            : 'bg-gradient-to-br from-white/5 to-pink-500/5 border border-pink-500/10 rounded-bl-sm'
+                      }`}
+                    >
+                      <p className={`leading-relaxed ${
+                        msg.isKiss
+                          ? 'text-pink-100 text-2xl md:text-3xl text-center'
+                          : 'text-pink-100/90 text-sm md:text-base'
+                      }`}>{msg.text}</p>
+                    </div>
+                    <p className={`text-pink-400/20 text-[10px] mt-1 ${msg.sender === 'Hubby' ? 'text-right mr-1' : 'ml-1'}`}>
+                      {msg.isKiss ? '💋 The first kiss!' : msg.time}
+                    </p>
+                    {/* Special love burst for kiss message */}
+                    {msg.isKiss && (
+                      <div className="flex items-center justify-end gap-1 mt-1">
+                        <span className="text-[10px] text-pink-400/50 animate-pulse">✨</span>
+                        <span className="text-[10px] text-pink-400/50 animate-pulse" style={{ animationDelay: '0.3s' }}>💕</span>
+                        <span className="text-[10px] text-pink-400/50 animate-pulse" style={{ animationDelay: '0.6s' }}>✨</span>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
               ))}
             </div>
+
+            {/* Chat input bar (decorative) */}
+            <div className="p-3 md:p-4 border-t border-pink-500/10 bg-gradient-to-r from-pink-500/3 to-rose-500/3">
+              <div className="flex items-center gap-3">
+                <div className="flex-1 rounded-full bg-black/30 border border-pink-500/10 px-4 py-2.5 text-pink-400/20 text-sm">
+                  Type a message...
+                </div>
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-[0_0_15px_rgba(236,72,153,0.3)]">
+                  <Heart className="w-4 h-4 text-white fill-white" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-6">
+            <p className="text-pink-400/30 text-xs italic">That 😘 changed everything — my first kiss to you, forever mine 💕</p>
           </div>
         </AnimatedSection>
 
         <AnimatedSection delay={0.4}>
           <div className="glass rounded-3xl p-8 md:p-10 max-w-3xl mx-auto mt-10 text-center space-y-4">
             <p className="text-pink-200/80 text-lg md:text-xl leading-relaxed">
-              Vo pehla kiss — jaise poori duniya ne ek pal ke liye ruk jaana tha. Tumhare hotho ka sparsh aaj bhi mere hotho pe mehsoos hota hai.
+              Vo pehla kiss — jaise poori duniya ne ek pal ke liye ruk jaana tha. Tumhare liye 😘 bhejne mein itna courage chahiye tha, aur jab bheja toh dil ki saari dhadkanein ek jagah aa gayi.
             </p>
             <p className="text-pink-200/70 text-base md:text-lg leading-relaxed">
-              Tumne mujhe pehla kiss diya aur mera sara dard, saare khwaab, sab kuch ek jagah aa gaya. Vo moment meri zindagi ka sabse khoobsurat pal hai.
+              Tumne 😂 reply kiya — par main jaanta hoon tumhe bhi mehsoos hua hoga. Vo pehla kiss emoji meri zindagi ka sabse khoobsurat moment hai.
             </p>
             <div className="pt-2">
               <motion.span
-                animate={{ scale: [1, 1.2, 1] }}
+                animate={{ scale: [1, 1.3, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
-                className="inline-block text-3xl"
+                className="inline-block text-4xl"
               >
                 💋
               </motion.span>
-              <p className="text-pink-400/40 text-sm italic mt-2">My first kiss belongs to you, forever</p>
+              <p className="text-pink-400/40 text-sm italic mt-3">My first kiss belongs to you, forever</p>
             </div>
           </div>
         </AnimatedSection>
