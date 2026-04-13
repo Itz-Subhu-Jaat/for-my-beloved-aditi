@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { Heart, Star, Sparkles, Mail, Clock, ArrowDown, Music, ChevronRight, ChevronLeft, MapPin, Image as ImageIcon, X, Globe } from 'lucide-react'
+import { Heart, Star, Sparkles, Mail, Clock, ArrowDown, Music, ChevronRight, MapPin, Image as ImageIcon, X, Globe } from 'lucide-react'
 
 /* ─────────── Floating Hearts Background ─────────── */
 function FloatingHearts() {
@@ -206,17 +206,7 @@ function ConfessionSection() {
           </div>
         </AnimatedSection>
 
-        <AnimatedSection delay={0.4}>
-          <div className="max-w-md mx-auto">
-            <div className="glass rounded-2xl overflow-hidden group">
-              <img src="/chat-screenshots/Screenshot_20260413-110629.jpg" alt="The confession poll"
-                className="w-full h-auto transition-transform duration-700 group-hover:scale-105" />
-              <div className="p-4 text-center">
-                <p className="text-pink-300/50 text-xs italic">The poll that started it all</p>
-              </div>
-            </div>
-          </div>
-        </AnimatedSection>
+
       </div>
     </section>
   )
@@ -270,129 +260,155 @@ function AcceptanceSection() {
   )
 }
 
-/* ─────────── Chat Snapshots Slideshow ─────────── */
+/* ─────────── Chat Memories - Lovely Themed Bubbles ─────────── */
 function ChatSlideshowSection() {
-  const slides = [
-    { src: '/chat-screenshots/Screenshot_20260413-111157.jpg', caption: 'When I tried to send that one emoji...', sender: 'Hubby' },
-    { src: '/chat-screenshots/Screenshot_20260413-111608.jpg', caption: 'The first kiss emoji 💋', sender: 'Hubby' },
-    { src: '/chat-screenshots/Screenshot_20260413-111625.jpg', caption: 'Hubby 🤍❤️ 😘', sender: 'Hubby' },
-    { src: '/chat-screenshots/Screenshot_20260413-111633.jpg', caption: 'Her precious laughter 😂', sender: 'Aditi' },
-    { src: '/chat-screenshots/Screenshot_20260413-111642.jpg', caption: 'Hubby 🤫❤️ 😊', sender: 'Hubby' },
+  const chatMessages = [
+    { sender: 'Hubby', text: 'Hey... I wanna tell you something 🫣', time: '3:42 AM' },
+    { sender: 'Aditi', text: 'Haan batao? 🤔', time: '3:42 AM' },
+    { sender: 'Hubby', text: 'Tum meri zindagi mein itni khaas ho... I can\'t imagine my life without you 💕', time: '3:43 AM' },
+    { sender: 'Hubby', text: '😘', time: '3:43 AM' },
+    { sender: 'Aditi', text: '😂😂😂', time: '3:44 AM' },
+    { sender: 'Hubby', text: '🤫❤️', time: '3:44 AM' },
+    { sender: 'Aditi', text: 'Hmm 🤭😊', time: '3:44 AM' },
+    { sender: 'Hubby', text: 'I love you so much Aditi 🤍❤️', time: '3:45 AM' },
+    { sender: 'Aditi', text: 'Aww 🥺💕', time: '3:45 AM' },
   ]
 
-  const [current, setCurrent] = useState(0)
-  const [direction, setDirection] = useState(1)
-  const [isPaused, setIsPaused] = useState(false)
+  const [visibleCount, setVisibleCount] = useState(0)
+  const [isTyping, setIsTyping] = useState(false)
+  const chatEndRef = useRef<HTMLDivElement>(null)
+  const hasStarted = useRef(false)
 
-  const next = useCallback(() => {
-    setDirection(1)
-    setCurrent((prev) => (prev + 1) % slides.length)
-  }, [slides.length])
-
-  const prev = useCallback(() => {
-    setDirection(-1)
-    setCurrent((prev) => (prev - 1 + slides.length) % slides.length)
-  }, [slides.length])
-
-  // Auto-play
+  // Auto-reveal messages one by one
   useEffect(() => {
-    if (isPaused) return
-    const interval = setInterval(next, 4000)
-    return () => clearInterval(interval)
-  }, [next, isPaused])
+    if (hasStarted.current) return
+    hasStarted.current = true
 
-  const variants = {
-    enter: (dir: number) => ({ x: dir > 0 ? 300 : -300, opacity: 0, scale: 0.95 }),
-    center: { x: 0, opacity: 1, scale: 1 },
-    exit: (dir: number) => ({ x: dir > 0 ? -300 : 300, opacity: 0, scale: 0.95 }),
-  }
+    const revealNext = (index: number) => {
+      if (index >= chatMessages.length) return
+
+      // Show typing indicator before message
+      setIsTyping(true)
+      const typingDelay = 800 + Math.random() * 600
+
+      setTimeout(() => {
+        setIsTyping(false)
+        setVisibleCount(index + 1)
+
+        // Schedule next message
+        const nextDelay = 1200 + Math.random() * 800
+        setTimeout(() => revealNext(index + 1), nextDelay)
+      }, typingDelay)
+    }
+
+    const startDelay = setTimeout(() => revealNext(0), 1500)
+    return () => clearTimeout(startDelay)
+  }, [chatMessages.length])
+
+  // Auto scroll
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [visibleCount, isTyping])
 
   return (
     <section className="relative py-24 md:py-32 px-4">
       <div className="max-w-2xl mx-auto">
         <AnimatedSection className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold mb-4"><GradientText>Our Chat Memories</GradientText></h2>
-          <p className="text-pink-300/60 text-lg">Every screenshot is a treasure I hold close to my heart</p>
+          <p className="text-pink-300/60 text-lg">Every message is a treasure I hold close to my heart</p>
         </AnimatedSection>
 
         <AnimatedSection delay={0.2}>
-          <div className="relative" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
-            {/* Phone frame */}
-            <div className="glass rounded-3xl p-4 md:p-6">
-              {/* Status bar */}
-              <div className="flex items-center justify-between mb-4 px-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-white text-xs font-bold">
-                    {slides[current].sender === 'Aditi' ? 'A' : 'S'}
-                  </div>
-                  <div>
-                    <p className="text-pink-200 text-sm font-medium">{slides[current].sender === 'Aditi' ? '🌸Aditi🌸' : 'Hubby 🤝❤️'}</p>
-                    <p className="text-pink-400/30 text-[10px]">01/12/2026 3:45 AM</p>
-                  </div>
-                </div>
-                <div className="flex gap-1">
-                  <div className="w-1.5 h-1.5 rounded-full bg-pink-500/40" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-pink-500/40" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-pink-500/40" />
-                </div>
+          <div className="glass rounded-3xl overflow-hidden">
+            {/* Chat header */}
+            <div className="flex items-center gap-3 p-4 md:p-5 border-b border-pink-500/10 bg-gradient-to-r from-pink-500/5 to-rose-500/5">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-white text-sm font-bold shadow-[0_0_15px_rgba(236,72,153,0.3)]">A</div>
+              <div>
+                <p className="text-pink-200 font-medium text-sm">🌸Aditi🌸</p>
+                <p className="text-pink-400/30 text-[10px]">Online • 13 Jan 2026</p>
+              </div>
+              <div className="ml-auto flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-green-400/60 animate-pulse" />
+                <span className="text-green-400/50 text-[10px]">connected</span>
+              </div>
+            </div>
+
+            {/* Chat messages area */}
+            <div className="p-4 md:p-6 space-y-3 max-h-[500px] overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
+              {/* Date divider */}
+              <div className="flex items-center gap-3 py-2">
+                <div className="flex-1 h-px bg-pink-500/10" />
+                <span className="text-pink-400/30 text-[10px] px-2">13 January 2026</span>
+                <div className="flex-1 h-px bg-pink-500/10" />
               </div>
 
-              {/* Slideshow area */}
-              <div className="relative aspect-[9/14] overflow-hidden rounded-2xl bg-black/30">
-                <AnimatePresence initial={false} custom={direction} mode="wait">
+              {chatMessages.slice(0, visibleCount).map((msg, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                  className={`flex ${msg.sender === 'Hubby' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div className={`max-w-[80%] ${msg.sender === 'Hubby' ? 'order-2' : 'order-1'}`}>
+                    {msg.sender === 'Aditi' && (
+                      <div className="flex items-center gap-2 mb-1 ml-1">
+                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-white text-[8px] font-bold">A</div>
+                        <span className="text-pink-400/30 text-[10px]">Aditi</span>
+                      </div>
+                    )}
+                    <div
+                      className={`rounded-2xl px-4 py-2.5 md:px-5 md:py-3 ${
+                        msg.sender === 'Hubby'
+                          ? 'bg-gradient-to-br from-pink-500/30 to-rose-500/20 border border-pink-500/20 rounded-br-sm'
+                          : 'bg-gradient-to-br from-white/5 to-pink-500/5 border border-pink-500/10 rounded-bl-sm'
+                      }`}
+                    >
+                      <p className="text-pink-100/90 text-sm md:text-base leading-relaxed">{msg.text}</p>
+                    </div>
+                    <p className={`text-pink-400/20 text-[10px] mt-1 ${msg.sender === 'Hubby' ? 'text-right mr-1' : 'ml-1'}`}>{msg.time}</p>
+                  </div>
+                </motion.div>
+              ))}
+
+              {/* Typing indicator */}
+              <AnimatePresence>
+                {isTyping && (
                   <motion.div
-                    key={current}
-                    custom={direction}
-                    variants={variants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ duration: 0.5, ease: 'easeInOut' }}
-                    className="absolute inset-0 flex items-center justify-center"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="flex justify-start"
                   >
-                    <img
-                      src={slides[current].src}
-                      alt={slides[current].caption}
-                      className="w-full h-full object-contain"
-                    />
+                    <div className="rounded-2xl rounded-bl-sm px-4 py-3 bg-gradient-to-br from-white/5 to-pink-500/5 border border-pink-500/10">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-2 h-2 rounded-full bg-pink-400/60 animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <div className="w-2 h-2 rounded-full bg-pink-400/60 animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <div className="w-2 h-2 rounded-full bg-pink-400/60 animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </div>
+                    </div>
                   </motion.div>
-                </AnimatePresence>
+                )}
+              </AnimatePresence>
 
-                {/* Gradient overlay at bottom */}
-                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/80 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <p className="text-pink-200 text-sm text-center font-medium">{slides[current].caption}</p>
-                </div>
-              </div>
-
-              {/* Navigation arrows */}
-              <div className="flex items-center justify-between mt-4">
-                <button onClick={prev}
-                  className="w-10 h-10 rounded-full glass-light flex items-center justify-center text-pink-400 hover:text-pink-200 hover:bg-pink-500/20 transition-all">
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-
-                {/* Dots */}
-                <div className="flex items-center gap-2">
-                  {slides.map((_, i) => (
-                    <button key={i} onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i) }}
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                        i === current ? 'w-6 bg-pink-500' : 'bg-pink-500/30 hover:bg-pink-500/50'
-                      }`} />
-                  ))}
-                </div>
-
-                <button onClick={next}
-                  className="w-10 h-10 rounded-full glass-light flex items-center justify-center text-pink-400 hover:text-pink-200 hover:bg-pink-500/20 transition-all">
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
+              <div ref={chatEndRef} />
             </div>
 
-            {/* Slide counter */}
-            <div className="text-center mt-4">
-              <span className="text-pink-400/30 text-xs">{current + 1} / {slides.length}</span>
+            {/* Chat input bar (decorative) */}
+            <div className="p-3 md:p-4 border-t border-pink-500/10 bg-gradient-to-r from-pink-500/3 to-rose-500/3">
+              <div className="flex items-center gap-3">
+                <div className="flex-1 rounded-full bg-black/30 border border-pink-500/10 px-4 py-2.5 text-pink-400/20 text-sm">
+                  Type a message...
+                </div>
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-[0_0_15px_rgba(236,72,153,0.3)]">
+                  <Heart className="w-4 h-4 text-white fill-white" />
+                </div>
+              </div>
             </div>
+          </div>
+
+          <div className="text-center mt-6">
+            <p className="text-pink-400/30 text-xs italic">Our first late night conversations — the beginning of forever 💕</p>
           </div>
         </AnimatedSection>
       </div>
@@ -420,77 +436,132 @@ function DistanceSection() {
           </div>
         </AnimatedSection>
 
-        {/* Love-themed Map */}
+        {/* Lovely Themed SVG Map */}
         <AnimatedSection delay={0.1}>
-          <div className="glass rounded-3xl overflow-hidden mb-10 max-w-3xl mx-auto">
-            <div className="relative">
-              <img
-                src="/chat-screenshots/map-route.jpg"
-                alt="Route from India to Janakpur, Nepal"
-                className="w-full h-auto opacity-70"
-              />
-              {/* Love-themed overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/30" />
-              
-              {/* Animated heart path overlay */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative w-full h-full">
-                  {/* India label */}
-                  <div className="absolute bottom-[15%] left-[20%] md:left-[25%]">
-                    <motion.div
-                      animate={{ y: [0, -5, 0] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="flex flex-col items-center"
-                    >
-                      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-pink-500/80 flex items-center justify-center shadow-[0_0_20px_rgba(236,72,153,0.5)]">
-                        <MapPin className="w-4 h-4 md:w-5 md:h-5 text-white" />
-                      </div>
-                      <span className="text-pink-300 text-xs md:text-sm font-semibold mt-1 drop-shadow-lg">Me 🇮🇳</span>
-                    </motion.div>
-                  </div>
+          <div className="glass rounded-3xl p-6 md:p-8 mb-10 max-w-3xl mx-auto">
+            <div className="relative w-full aspect-[16/10]">
+              <svg viewBox="0 0 800 500" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="mapGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="#ec4899" stopOpacity="0.15" />
+                    <stop offset="100%" stopColor="#0a0a0a" stopOpacity="0" />
+                  </radialGradient>
+                  <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#ec4899" stopOpacity="0.8" />
+                    <stop offset="50%" stopColor="#f472b6" stopOpacity="1" />
+                    <stop offset="100%" stopColor="#f43f5e" stopOpacity="0.8" />
+                  </linearGradient>
+                  <linearGradient id="indiaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#ec4899" stopOpacity="0.2" />
+                    <stop offset="100%" stopColor="#be185d" stopOpacity="0.1" />
+                  </linearGradient>
+                  <linearGradient id="nepalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#f43f5e" stopOpacity="0.2" />
+                    <stop offset="100%" stopColor="#e11d48" stopOpacity="0.1" />
+                  </linearGradient>
+                  <filter id="glow">
+                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                    <feMerge>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                  <filter id="bigGlow">
+                    <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+                    <feMerge>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                </defs>
 
-                  {/* Animated dashed heart line */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <motion.div
-                      animate={{ scale: [1, 1.2, 1], opacity: [0.6, 1, 0.6] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      <Heart className="w-8 h-8 md:w-12 md:h-12 text-pink-500 fill-pink-500 drop-shadow-[0_0_30px_rgba(236,72,153,0.8)]" />
-                    </motion.div>
-                  </div>
+                {/* Background glow */}
+                <rect width="800" height="500" fill="url(#mapGlow)" />
 
-                  {/* Nepal label */}
-                  <div className="absolute top-[20%] right-[18%] md:right-[22%]">
-                    <motion.div
-                      animate={{ y: [0, -5, 0] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                      className="flex flex-col items-center"
-                    >
-                      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-rose-500/80 flex items-center justify-center shadow-[0_0_20px_rgba(244,63,94,0.5)]">
-                        <Heart className="w-4 h-4 md:w-5 md:h-5 text-white fill-white" />
-                      </div>
-                      <span className="text-rose-300 text-xs md:text-sm font-semibold mt-1 drop-shadow-lg">Aditi 🇳🇵</span>
-                    </motion.div>
-                  </div>
-                </div>
+                {/* India shape (simplified) */}
+                <path d="M 150 200 Q 180 160, 250 170 Q 320 140, 380 180 Q 420 200, 450 250 Q 470 300, 440 350 Q 400 390, 350 380 Q 300 370, 250 350 Q 200 330, 170 290 Q 140 250, 150 200 Z"
+                  fill="url(#indiaGrad)" stroke="#ec4899" strokeWidth="1" strokeOpacity="0.3" />
+
+                {/* Nepal shape (simplified) */}
+                <path d="M 420 80 Q 460 60, 520 70 Q 560 80, 570 120 Q 580 160, 540 170 Q 500 180, 460 170 Q 430 150, 420 120 Q 410 100, 420 80 Z"
+                  fill="url(#nepalGrad)" stroke="#f43f5e" strokeWidth="1" strokeOpacity="0.3" />
+
+                {/* Small decorative hearts scattered */}
+                <text x="200" y="230" fontSize="10" fill="#ec4899" opacity="0.15">♥</text>
+                <text x="300" y="280" fontSize="8" fill="#ec4899" opacity="0.12">♥</text>
+                <text x="250" y="320" fontSize="12" fill="#f472b6" opacity="0.1">♥</text>
+                <text x="480" y="110" fontSize="10" fill="#f43f5e" opacity="0.15">♥</text>
+                <text x="510" y="140" fontSize="8" fill="#f43f5e" opacity="0.12">♥</text>
+                <text x="530" y="100" fontSize="6" fill="#fb7185" opacity="0.1">♥</text>
+
+                {/* Dashed love path from Rajasthan to Janakpur */}
+                <path d="M 270 270 Q 350 220, 420 180 Q 460 155, 500 130"
+                  fill="none" stroke="url(#lineGrad)" strokeWidth="2" strokeDasharray="8 6" filter="url(#glow)">
+                  <animate attributeName="stroke-dashoffset" from="0" to="-28" dur="2s" repeatCount="indefinite" />
+                </path>
+
+                {/* Floating hearts along the path */}
+                <text x="340" y="210" fontSize="14" filter="url(#glow)">
+                  <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite" />
+                  ♥
+                </text>
+                <text x="420" y="170" fontSize="16" filter="url(#glow)">
+                  <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite" begin="0.5s" />
+                  ♥
+                </text>
+
+                {/* Rajasthan pin (India) */}
+                <circle cx="270" cy="270" r="12" fill="#ec4899" opacity="0.3" filter="url(#bigGlow)">
+                  <animate attributeName="r" values="12;16;12" dur="2s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.3;0.5;0.3" dur="2s" repeatCount="indefinite" />
+                </circle>
+                <circle cx="270" cy="270" r="6" fill="#ec4899" filter="url(#glow)" />
+                <circle cx="270" cy="270" r="3" fill="#fdf2f8" />
+
+                {/* Janakpur pin (Nepal) */}
+                <circle cx="500" cy="130" r="12" fill="#f43f5e" opacity="0.3" filter="url(#bigGlow)">
+                  <animate attributeName="r" values="12;16;12" dur="2s" repeatCount="indefinite" begin="1s" />
+                  <animate attributeName="opacity" values="0.3;0.5;0.3" dur="2s" repeatCount="indefinite" begin="1s" />
+                </circle>
+                <circle cx="500" cy="130" r="6" fill="#f43f5e" filter="url(#glow)" />
+                <circle cx="500" cy="130" r="3" fill="#fdf2f8" />
+
+                {/* Big heart in the middle of the path */}
+                <text x="385" y="210" fontSize="28" fill="#ec4899" filter="url(#bigGlow)" textAnchor="middle">
+                  <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite" />
+                  ♥
+                </text>
+
+                {/* Labels */}
+                <text x="270" y="300" textAnchor="middle" fontSize="13" fill="#f9a8d4" fontWeight="600">Me 🇮🇳</text>
+                <text x="270" y="318" textAnchor="middle" fontSize="9" fill="#f9a8d4" opacity="0.5">Rajasthan</text>
+
+                <text x="500" y="160" textAnchor="middle" fontSize="13" fill="#fb7185" fontWeight="600">Aditi 🇳🇵</text>
+                <text x="500" y="178" textAnchor="middle" fontSize="9" fill="#fb7185" opacity="0.5">Janakpur</text>
+
+                {/* Distance label */}
+                <rect x="330" y="225" width="120" height="24" rx="12" fill="#ec4899" fillOpacity="0.15" stroke="#ec4899" strokeWidth="0.5" strokeOpacity="0.3" />
+                <text x="390" y="241" textAnchor="middle" fontSize="10" fill="#f9a8d4">1,000+ km of love</text>
+
+                {/* Country labels */}
+                <text x="300" y="370" textAnchor="middle" fontSize="18" fill="#ec4899" opacity="0.2" fontWeight="700" letterSpacing="4">INDIA</text>
+                <text x="490" y="85" textAnchor="middle" fontSize="14" fill="#f43f5e" opacity="0.2" fontWeight="700" letterSpacing="3">NEPAL</text>
+              </svg>
+            </div>
+
+            {/* Bottom info bar */}
+            <div className="flex items-center justify-between mt-4 px-2">
+              <div>
+                <p className="text-pink-200 text-sm font-medium">My Heart → Her Heart</p>
+                <p className="text-pink-400/40 text-xs">Rajasthan → Mata Janaki Temple, Janakpur</p>
               </div>
-
-              {/* Bottom info bar */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-[#0a0a0a] to-transparent">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-pink-200 text-sm font-medium">My Heart → Her Heart</p>
-                    <p className="text-pink-400/40 text-xs">Rajasthan → Mata Janaki Temple, Janakpur</p>
-                  </div>
-                  <motion.div
-                    animate={{ opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="text-pink-400/60 text-xs"
-                  >
-                    ❤️ 1,000+ km of love
-                  </motion.div>
-                </div>
-              </div>
+              <motion.div
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="text-pink-400/60 text-xs"
+              >
+                ❤️ Connected by love
+              </motion.div>
             </div>
           </div>
         </AnimatedSection>
