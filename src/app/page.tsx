@@ -277,6 +277,7 @@ function ChatSlideshowSection() {
   const [visibleCount, setVisibleCount] = useState(0)
   const [isTyping, setIsTyping] = useState(false)
   const chatEndRef = useRef<HTMLDivElement>(null)
+  const chatContainerRef = useRef<HTMLDivElement>(null)
   const hasStarted = useRef(false)
 
   // Auto-reveal messages one by one
@@ -305,9 +306,11 @@ function ChatSlideshowSection() {
     return () => clearTimeout(startDelay)
   }, [chatMessages.length])
 
-  // Auto scroll
+  // Auto scroll - only within chat container, NOT the whole page
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (chatContainerRef.current && chatEndRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight
+    }
   }, [visibleCount, isTyping])
 
   return (
@@ -334,7 +337,7 @@ function ChatSlideshowSection() {
             </div>
 
             {/* Chat messages area */}
-            <div className="p-4 md:p-6 space-y-3 max-h-[500px] overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
+            <div ref={chatContainerRef} className="p-4 md:p-6 space-y-3 max-h-[500px] overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
               {/* Date divider */}
               <div className="flex items-center gap-3 py-2">
                 <div className="flex-1 h-px bg-pink-500/10" />
