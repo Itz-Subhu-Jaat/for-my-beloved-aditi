@@ -274,45 +274,6 @@ function ChatSlideshowSection() {
     { sender: 'Aditi', text: 'Aww 🥺💕', time: '3:45 AM' },
   ]
 
-  const [visibleCount, setVisibleCount] = useState(0)
-  const [isTyping, setIsTyping] = useState(false)
-  const chatEndRef = useRef<HTMLDivElement>(null)
-  const chatContainerRef = useRef<HTMLDivElement>(null)
-  const hasStarted = useRef(false)
-
-  // Auto-reveal messages one by one
-  useEffect(() => {
-    if (hasStarted.current) return
-    hasStarted.current = true
-
-    const revealNext = (index: number) => {
-      if (index >= chatMessages.length) return
-
-      // Show typing indicator before message
-      setIsTyping(true)
-      const typingDelay = 800 + Math.random() * 600
-
-      setTimeout(() => {
-        setIsTyping(false)
-        setVisibleCount(index + 1)
-
-        // Schedule next message
-        const nextDelay = 1200 + Math.random() * 800
-        setTimeout(() => revealNext(index + 1), nextDelay)
-      }, typingDelay)
-    }
-
-    const startDelay = setTimeout(() => revealNext(0), 1500)
-    return () => clearTimeout(startDelay)
-  }, [chatMessages.length])
-
-  // Auto scroll - only within chat container, NOT the whole page
-  useEffect(() => {
-    if (chatContainerRef.current && chatEndRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight
-    }
-  }, [visibleCount, isTyping])
-
   return (
     <section className="relative py-24 md:py-32 px-4">
       <div className="max-w-2xl mx-auto">
@@ -337,7 +298,7 @@ function ChatSlideshowSection() {
             </div>
 
             {/* Chat messages area */}
-            <div ref={chatContainerRef} className="p-4 md:p-6 space-y-3 max-h-[500px] overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
+            <div className="p-4 md:p-6 space-y-3">
               {/* Date divider */}
               <div className="flex items-center gap-3 py-2">
                 <div className="flex-1 h-px bg-pink-500/10" />
@@ -345,12 +306,12 @@ function ChatSlideshowSection() {
                 <div className="flex-1 h-px bg-pink-500/10" />
               </div>
 
-              {chatMessages.slice(0, visibleCount).map((msg, i) => (
+              {chatMessages.map((msg, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                  transition={{ duration: 0.3, delay: i * 0.1, ease: 'easeOut' }}
                   className={`flex ${msg.sender === 'Hubby' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div className={`max-w-[80%] ${msg.sender === 'Hubby' ? 'order-2' : 'order-1'}`}>
@@ -373,28 +334,6 @@ function ChatSlideshowSection() {
                   </div>
                 </motion.div>
               ))}
-
-              {/* Typing indicator */}
-              <AnimatePresence>
-                {isTyping && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="flex justify-start"
-                  >
-                    <div className="rounded-2xl rounded-bl-sm px-4 py-3 bg-gradient-to-br from-white/5 to-pink-500/5 border border-pink-500/10">
-                      <div className="flex items-center gap-1.5">
-                        <div className="w-2 h-2 rounded-full bg-pink-400/60 animate-bounce" style={{ animationDelay: '0ms' }} />
-                        <div className="w-2 h-2 rounded-full bg-pink-400/60 animate-bounce" style={{ animationDelay: '150ms' }} />
-                        <div className="w-2 h-2 rounded-full bg-pink-400/60 animate-bounce" style={{ animationDelay: '300ms' }} />
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              <div ref={chatEndRef} />
             </div>
 
             {/* Chat input bar (decorative) */}
