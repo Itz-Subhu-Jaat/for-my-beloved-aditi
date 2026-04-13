@@ -420,6 +420,81 @@ function DistanceSection() {
           </div>
         </AnimatedSection>
 
+        {/* Love-themed Map */}
+        <AnimatedSection delay={0.1}>
+          <div className="glass rounded-3xl overflow-hidden mb-10 max-w-3xl mx-auto">
+            <div className="relative">
+              <img
+                src="/chat-screenshots/map-route.jpg"
+                alt="Route from India to Janakpur, Nepal"
+                className="w-full h-auto opacity-70"
+              />
+              {/* Love-themed overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/30" />
+              
+              {/* Animated heart path overlay */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative w-full h-full">
+                  {/* India label */}
+                  <div className="absolute bottom-[15%] left-[20%] md:left-[25%]">
+                    <motion.div
+                      animate={{ y: [0, -5, 0] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="flex flex-col items-center"
+                    >
+                      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-pink-500/80 flex items-center justify-center shadow-[0_0_20px_rgba(236,72,153,0.5)]">
+                        <MapPin className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                      </div>
+                      <span className="text-pink-300 text-xs md:text-sm font-semibold mt-1 drop-shadow-lg">Me 🇮🇳</span>
+                    </motion.div>
+                  </div>
+
+                  {/* Animated dashed heart line */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1], opacity: [0.6, 1, 0.6] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      <Heart className="w-8 h-8 md:w-12 md:h-12 text-pink-500 fill-pink-500 drop-shadow-[0_0_30px_rgba(236,72,153,0.8)]" />
+                    </motion.div>
+                  </div>
+
+                  {/* Nepal label */}
+                  <div className="absolute top-[20%] right-[18%] md:right-[22%]">
+                    <motion.div
+                      animate={{ y: [0, -5, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                      className="flex flex-col items-center"
+                    >
+                      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-rose-500/80 flex items-center justify-center shadow-[0_0_20px_rgba(244,63,94,0.5)]">
+                        <Heart className="w-4 h-4 md:w-5 md:h-5 text-white fill-white" />
+                      </div>
+                      <span className="text-rose-300 text-xs md:text-sm font-semibold mt-1 drop-shadow-lg">Aditi 🇳🇵</span>
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom info bar */}
+              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-[#0a0a0a] to-transparent">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-pink-200 text-sm font-medium">My Heart → Her Heart</p>
+                    <p className="text-pink-400/40 text-xs">Rajasthan → Mata Janaki Temple, Janakpur</p>
+                  </div>
+                  <motion.div
+                    animate={{ opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="text-pink-400/60 text-xs"
+                  >
+                    ❤️ 1,000+ km of love
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </AnimatedSection>
+
         <AnimatedSection delay={0.2}>
           <div className="glass rounded-3xl p-8 md:p-12 max-w-3xl mx-auto text-center space-y-6">
             <Globe className="w-12 h-12 text-pink-400/50 mx-auto" />

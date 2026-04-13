@@ -29,6 +29,9 @@ function savePhotos(photos: string[]) {
   fs.writeFileSync(PHOTOS_JSON, JSON.stringify(photos, null, 2))
 }
 
+// Increase body size limit for photo uploads
+export const runtime = 'nodejs'
+
 // GET - list all photos
 export async function GET() {
   const photos = getPhotos()
@@ -38,9 +41,14 @@ export async function GET() {
 // POST - upload new photos
 export async function POST(request: NextRequest) {
   try {
+    const contentType = request.headers.get('content-type') || ''
+    if (!contentType.includes('multipart/form-data')) {
+      return NextResponse.json({ error: 'Invalid content type' }, { status: 400 })
+    }
+
     const formData = await request.formData()
-    const files = formData.getAll('photos') as File[]
-    
+    const files = formData.getAll('photos')
+
     if (!files || files.length === 0) {
       return NextResponse.json({ error: 'No files provided' }, { status: 400 })
     }
@@ -48,6 +56,8 @@ export async function POST(request: NextRequest) {
     const photos = getPhotos()
 
     for (const file of files) {
+      if (!(file instanceof File)) continue
+
       const bytes = await file.arrayBuffer()
       const buffer = Buffer.from(bytes)
 
@@ -63,10 +73,11 @@ export async function POST(request: NextRequest) {
     }
 
     savePhotos(photos)
-    return NextResponse.json({ photos })
+    return NextResponse.json({ photos, count: photos.length })
   } catch (error) {
     console.error('Upload error:', error)
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 })
+    const message = error instanceof Error ? error.message : 'Upload failed'
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
 
@@ -74,14 +85,14 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     const { photoUrl } = await request.json()
-    
+
     if (!photoUrl) {
       return NextResponse.json({ error: 'No photo URL provided' }, { status: 400 })
     }
 
     const photos = getPhotos()
     const updatedPhotos = photos.filter(p => p !== photoUrl)
-    
+
     // Try to delete the file from disk
     const filename = path.basename(photoUrl)
     const filepath = path.join(PHOTOS_DIR, filename)
@@ -93,6 +104,7 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ photos: updatedPhotos })
   } catch (error) {
     console.error('Delete error:', error)
-    return NextResponse.json({ error: 'Delete failed' }, { status: 500 })
+    const message = error instanceof Error ? error.message : 'Delete failed'
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
