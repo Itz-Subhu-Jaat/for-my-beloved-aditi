@@ -358,6 +358,127 @@ function ChatSlideshowSection() {
   )
 }
 
+/* ─────────── First Kiss Section ─────────── */
+function FirstKissSection() {
+  const screenshots = [
+    { src: '/chat-screenshots/Screenshot_20260413-110629.jpg', caption: 'The moment that started it all...' },
+    { src: '/chat-screenshots/Screenshot_20260413-111157.jpg', caption: 'My heart was racing...' },
+    { src: '/chat-screenshots/Screenshot_20260413-111608.jpg', caption: 'When words fell short...' },
+    { src: '/chat-screenshots/Screenshot_20260413-111625.jpg', caption: 'And then it happened 💋' },
+    { src: '/chat-screenshots/Screenshot_20260413-111633.jpg', caption: 'Our first kiss... forever in my heart' },
+    { src: '/chat-screenshots/Screenshot_20260413-111642.jpg', caption: 'The most magical moment 💕' },
+  ]
+
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [showFull, setShowFull] = useState(false)
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % screenshots.length)
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + screenshots.length) % screenshots.length)
+
+  return (
+    <section className="relative py-24 md:py-32 px-4 overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-pink-900/5 via-transparent to-rose-900/5" />
+      </div>
+      <div className="max-w-4xl mx-auto relative z-10">
+        <AnimatedSection className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light mb-6">
+            <span className="text-lg">💋</span>
+            <span className="text-pink-300/70 text-sm">Our Special Moment</span>
+          </div>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4"><GradientText>The First Kiss</GradientText></h2>
+          <p className="text-pink-300/60 text-lg max-w-2xl mx-auto">
+            Jab pehli baar hotho ne hotho ko chua — duniya ruk gayi thi, sirf hum do the
+          </p>
+        </AnimatedSection>
+
+        <AnimatedSection delay={0.2}>
+          <div className="glass rounded-3xl overflow-hidden border border-pink-500/15 shadow-[0_0_30px_rgba(236,72,153,0.15)]">
+            {/* Slideshow */}
+            <div className="relative">
+              <div className="relative aspect-[9/16] md:aspect-[3/4] max-h-[600px] mx-auto bg-black/30 overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentSlide}
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -50 }}
+                    transition={{ duration: 0.4 }}
+                    className="absolute inset-0 flex items-center justify-center cursor-pointer"
+                    onClick={() => setShowFull(!showFull)}
+                  >
+                    <img
+                      src={screenshots[currentSlide].src}
+                      alt={`First kiss chat ${currentSlide + 1}`}
+                      className={`transition-all duration-500 ${showFull ? 'w-full h-full object-contain' : 'w-full h-full object-contain'}`}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Love decorations on image */}
+                <div className="absolute top-3 left-3 text-xl opacity-50 animate-pulse">💋</div>
+                <div className="absolute top-3 right-3 text-xl opacity-50 animate-pulse" style={{ animationDelay: '0.5s' }}>💕</div>
+                <div className="absolute bottom-16 left-3 text-sm opacity-40">♥</div>
+                <div className="absolute bottom-16 right-3 text-sm opacity-40">♥</div>
+              </div>
+
+              {/* Caption */}
+              <div className="p-4 text-center bg-gradient-to-r from-pink-500/5 to-rose-500/5 border-t border-pink-500/10">
+                <p className="text-pink-200/80 text-sm md:text-base italic">{screenshots[currentSlide].caption}</p>
+              </div>
+
+              {/* Navigation */}
+              {screenshots.length > 1 && (
+                <div className="absolute bottom-20 left-0 right-0 flex items-center justify-between px-3 pointer-events-none">
+                  <button onClick={prevSlide} className="pointer-events-auto w-9 h-9 rounded-full bg-black/40 border border-pink-500/20 flex items-center justify-center text-pink-300/70 hover:bg-pink-500/30 hover:text-pink-200 transition-all backdrop-blur-sm">
+                    <span className="text-lg">‹</span>
+                  </button>
+                  <button onClick={nextSlide} className="pointer-events-auto w-9 h-9 rounded-full bg-black/40 border border-pink-500/20 flex items-center justify-center text-pink-300/70 hover:bg-pink-500/30 hover:text-pink-200 transition-all backdrop-blur-sm">
+                    <span className="text-lg">›</span>
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Dot indicators */}
+            <div className="flex items-center justify-center gap-2 py-3 bg-black/20">
+              {screenshots.map((_, idx) => (
+                <button key={idx} onClick={() => setCurrentSlide(idx)}
+                  className={`rounded-full transition-all duration-300 ${
+                    idx === currentSlide
+                      ? 'bg-pink-400 w-6 h-2'
+                      : 'bg-pink-500/30 w-2 h-2 hover:bg-pink-500/50'
+                  }`} />
+              ))}
+            </div>
+          </div>
+        </AnimatedSection>
+
+        <AnimatedSection delay={0.4}>
+          <div className="glass rounded-3xl p-8 md:p-10 max-w-3xl mx-auto mt-10 text-center space-y-4">
+            <p className="text-pink-200/80 text-lg md:text-xl leading-relaxed">
+              Vo pehla kiss — jaise poori duniya ne ek pal ke liye ruk jaana tha. Tumhare hotho ka sparsh aaj bhi mere hotho pe mehsoos hota hai.
+            </p>
+            <p className="text-pink-200/70 text-base md:text-lg leading-relaxed">
+              Tumne mujhe pehla kiss diya aur mera sara dard, saare khwaab, sab kuch ek jagah aa gaya. Vo moment meri zindagi ka sabse khoobsurat pal hai.
+            </p>
+            <div className="pt-2">
+              <motion.span
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="inline-block text-3xl"
+              >
+                💋
+              </motion.span>
+              <p className="text-pink-400/40 text-sm italic mt-2">My first kiss belongs to you, forever</p>
+            </div>
+          </div>
+        </AnimatedSection>
+      </div>
+    </section>
+  )
+}
+
 /* ─────────── Nepal-India Distance Section ─────────── */
 function DistanceSection() {
   return (
@@ -664,9 +785,12 @@ function GallerySection() {
   )
 }
 
-/* ─────────── Aditi Photos Section (NO admin on main page) ─────────── */
+/* ─────────── Aditi Photos Section - Lovely Gallery with Carousel ─────────── */
 function AditiPhotosSection() {
   const [photos, setPhotos] = useState<string[]>([])
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [showCarousel, setShowCarousel] = useState(false)
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
 
   useEffect(() => {
     fetch('/api/photos')
@@ -674,6 +798,28 @@ function AditiPhotosSection() {
       .then(data => { if (data.photos) setPhotos(data.photos) })
       .catch(() => {})
   }, [])
+
+  const handleDelete = async (photoUrl: string) => {
+    try {
+      const res = await fetch('/api/photos', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ photoUrl }),
+      })
+      const data = await res.json()
+      if (data.photos) setPhotos(data.photos)
+      setDeleteConfirm(null)
+      setShowCarousel(false)
+    } catch {}
+  }
+
+  const openCarousel = (index: number) => {
+    setActiveIndex(index)
+    setShowCarousel(true)
+  }
+
+  const nextPhoto = () => setActiveIndex((prev) => (prev + 1) % photos.length)
+  const prevPhoto = () => setActiveIndex((prev) => (prev - 1 + photos.length) % photos.length)
 
   return (
     <section className="relative py-24 md:py-32 px-4">
@@ -687,9 +833,33 @@ function AditiPhotosSection() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {photos.map((photo, i) => (
               <AnimatedSection key={photo} delay={i * 0.05}>
-                <motion.div whileHover={{ y: -5 }} className="glass rounded-xl overflow-hidden group">
-                  <div className="aspect-square overflow-hidden">
-                    <img src={photo} alt={`Aditi ${i + 1}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <motion.div
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  className="relative group cursor-pointer"
+                  onClick={() => openCarousel(i)}
+                >
+                  {/* Love frame decoration */}
+                  <div className="absolute -inset-1 bg-gradient-to-br from-pink-500/20 via-rose-500/10 to-pink-500/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
+                  <div className="relative glass rounded-xl overflow-hidden border border-pink-500/10 group-hover:border-pink-500/30 transition-all duration-500">
+                    <div className="aspect-square overflow-hidden relative">
+                      <img src={photo} alt={`Aditi ${i + 1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      {/* Love overlay on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-pink-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      {/* Floating hearts decoration on hover */}
+                      <div className="absolute top-2 right-2 text-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 text-lg">💕</div>
+                      <div className="absolute bottom-2 left-2 text-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 text-sm">♥</div>
+                      {/* Delete button */}
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setDeleteConfirm(photo) }}
+                        className="absolute top-2 left-2 w-7 h-7 rounded-full bg-black/60 border border-pink-500/20 flex items-center justify-center text-pink-300/60 hover:text-white hover:bg-red-500/80 hover:border-red-400 transition-all opacity-0 group-hover:opacity-100 z-10"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                      {/* Photo number badge */}
+                      <div className="absolute bottom-2 right-2 w-6 h-6 rounded-full bg-pink-500/30 border border-pink-400/30 flex items-center justify-center text-[10px] text-pink-200 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        {i + 1}
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
               </AnimatedSection>
@@ -705,6 +875,109 @@ function AditiPhotosSection() {
           </AnimatedSection>
         )}
       </div>
+
+      {/* Carousel Modal */}
+      <AnimatePresence>
+        {showCarousel && photos.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
+            onClick={() => setShowCarousel(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="relative max-w-3xl w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Love decorations around photo */}
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-3xl animate-bounce">💕</div>
+              <div className="absolute -top-3 -left-3 text-xl opacity-60">♥</div>
+              <div className="absolute -top-3 -right-3 text-xl opacity-60">♥</div>
+
+              {/* Photo frame */}
+              <div className="glass rounded-2xl overflow-hidden border-2 border-pink-500/20 shadow-[0_0_40px_rgba(236,72,153,0.3)]">
+                <div className="relative aspect-[3/4] md:aspect-square max-h-[70vh]">
+                  <img src={photos[activeIndex]} alt={`Aditi ${activeIndex + 1}`} className="w-full h-full object-contain bg-black/50" />
+                  {/* Sparkle corners */}
+                  <div className="absolute top-3 left-3 text-pink-400/40 text-sm">✨</div>
+                  <div className="absolute top-3 right-3 text-pink-400/40 text-sm">✨</div>
+                  <div className="absolute bottom-3 left-3 text-pink-400/40 text-sm">✨</div>
+                  <div className="absolute bottom-3 right-3 text-pink-400/40 text-sm">✨</div>
+                </div>
+              </div>
+
+              {/* Navigation arrows */}
+              {photos.length > 1 && (
+                <>
+                  <button onClick={prevPhoto} className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 w-10 h-10 rounded-full bg-pink-500/20 border border-pink-500/30 flex items-center justify-center text-pink-300 hover:bg-pink-500/40 transition-all">
+                    <span className="text-lg">‹</span>
+                  </button>
+                  <button onClick={nextPhoto} className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 w-10 h-10 rounded-full bg-pink-500/20 border border-pink-500/30 flex items-center justify-center text-pink-300 hover:bg-pink-500/40 transition-all">
+                    <span className="text-lg">›</span>
+                  </button>
+                </>
+              )}
+
+              {/* Counter */}
+              <div className="text-center mt-4">
+                <span className="text-pink-300/60 text-sm">{activeIndex + 1} / {photos.length}</span>
+                <div className="flex items-center justify-center gap-1.5 mt-2">
+                  {photos.length > 1 && photos.map((_, idx) => (
+                    <button key={idx} onClick={() => setActiveIndex(idx)}
+                      className={`w-2 h-2 rounded-full transition-all ${idx === activeIndex ? 'bg-pink-400 w-4' : 'bg-pink-500/30'}`} />
+                  ))}
+                </div>
+              </div>
+
+              {/* Close button */}
+              <button onClick={() => setShowCarousel(false)}
+                className="absolute -top-10 right-0 text-pink-400/60 hover:text-pink-300 transition-colors text-sm">
+                Close ✕
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Delete Confirmation Modal */}
+      <AnimatePresence>
+        {deleteConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+            onClick={() => setDeleteConfirm(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="glass rounded-2xl p-8 max-w-sm w-full text-center"
+              onClick={(e) => e.stopPropagation()}
+              style={{ background: 'rgba(20, 10, 15, 0.9)', border: '1px solid rgba(236, 72, 153, 0.2)' }}
+            >
+              <Heart className="w-10 h-10 text-pink-400 mx-auto mb-4" />
+              <p className="text-pink-200 font-medium mb-2">Delete this photo?</p>
+              <p className="text-pink-400/40 text-sm mb-6">This action cannot be undone</p>
+              <div className="flex gap-3">
+                <button onClick={() => setDeleteConfirm(null)}
+                  className="flex-1 py-2.5 rounded-xl bg-pink-500/10 border border-pink-500/20 text-pink-300 text-sm hover:bg-pink-500/20 transition-all">
+                  Cancel
+                </button>
+                <button onClick={() => handleDelete(deleteConfirm)}
+                  className="flex-1 py-2.5 rounded-xl bg-red-500/20 border border-red-500/30 text-red-300 text-sm hover:bg-red-500/30 transition-all">
+                  Delete
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
@@ -899,6 +1172,7 @@ export default function Home() {
         <ConfessionSection />
         <AcceptanceSection />
         <ChatSlideshowSection />
+        <FirstKissSection />
         <DistanceSection />
         <ReasonsSection />
         <LoveLetterSection />
