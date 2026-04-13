@@ -2,33 +2,20 @@
 
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { Heart, Star, Sparkles, Mail, Clock, ArrowDown, Music, ChevronRight, Upload, MapPin, Image as ImageIcon, X, Globe, MessageCircle } from 'lucide-react'
+import { Heart, Star, Sparkles, Mail, Clock, ArrowDown, Music, ChevronRight, ChevronLeft, MapPin, Image as ImageIcon, X, Globe } from 'lucide-react'
 
 /* ─────────── Floating Hearts Background ─────────── */
 function FloatingHearts() {
   const hearts = useMemo(() => Array.from({ length: 20 }, (_, i) => ({
-    id: i,
-    left: Math.random() * 100,
-    size: Math.random() * 16 + 8,
-    duration: Math.random() * 10 + 8,
-    delay: Math.random() * 10,
+    id: i, left: Math.random() * 100, size: Math.random() * 16 + 8,
+    duration: Math.random() * 10 + 8, delay: Math.random() * 10,
   })), [])
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       {hearts.map((h) => (
-        <div
-          key={h.id}
-          className="absolute animate-float-up text-pink-500/20"
-          style={{
-            left: `${h.left}%`,
-            fontSize: `${h.size}px`,
-            animationDuration: `${h.duration}s`,
-            animationDelay: `${h.delay}s`,
-          }}
-        >
-          ♥
-        </div>
+        <div key={h.id} className="absolute animate-float-up text-pink-500/20"
+          style={{ left: `${h.left}%`, fontSize: `${h.size}px`, animationDuration: `${h.duration}s`, animationDelay: `${h.delay}s` }}>♥</div>
       ))}
     </div>
   )
@@ -37,27 +24,15 @@ function FloatingHearts() {
 /* ─────────── Sparkle Particles ─────────── */
 function SparkleParticles() {
   const sparkles = useMemo(() => Array.from({ length: 30 }, (_, i) => ({
-    id: i,
-    left: Math.random() * 100,
-    top: Math.random() * 100,
-    delay: Math.random() * 4,
-    size: Math.random() * 4 + 2,
+    id: i, left: Math.random() * 100, top: Math.random() * 100,
+    delay: Math.random() * 4, size: Math.random() * 4 + 2,
   })), [])
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0">
       {sparkles.map((s) => (
-        <div
-          key={s.id}
-          className="absolute rounded-full bg-pink-300/40 animate-sparkle"
-          style={{
-            left: `${s.left}%`,
-            top: `${s.top}%`,
-            width: `${s.size}px`,
-            height: `${s.size}px`,
-            animationDelay: `${s.delay}s`,
-          }}
-        />
+        <div key={s.id} className="absolute rounded-full bg-pink-300/40 animate-sparkle"
+          style={{ left: `${s.left}%`, top: `${s.top}%`, width: `${s.size}px`, height: `${s.size}px`, animationDelay: `${s.delay}s` }} />
       ))}
     </div>
   )
@@ -67,17 +42,22 @@ function SparkleParticles() {
 function AnimatedSection({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
-
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 60 }}
+    <motion.div ref={ref} initial={{ opacity: 0, y: 60 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
-      transition={{ duration: 0.8, delay, ease: 'easeOut' }}
-      className={className}
-    >
+      transition={{ duration: 0.8, delay, ease: 'easeOut' }} className={className}>
       {children}
     </motion.div>
+  )
+}
+
+/* ─────────── Gradient Text Helper ─────────── */
+function GradientText({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return (
+    <span className={className} style={{
+      background: 'linear-gradient(135deg, #ec4899, #f9a8d4)',
+      WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+    }}>{children}</span>
   )
 }
 
@@ -92,98 +72,61 @@ function HeroSection() {
     return () => { clearTimeout(t1); clearTimeout(t2) }
   }, [])
 
-  const scrollToContent = () => {
-    document.getElementById('confession')?.scrollIntoView({ behavior: 'smooth' })
-  }
-
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-4">
       <div className="absolute inset-0 z-0">
-        <img
-          src="/hero-image.png"
-          alt="Romantic sunset"
-          className="w-full h-full object-cover opacity-30"
-        />
+        <img src="/hero-image.png" alt="Romantic sunset" className="w-full h-full object-cover opacity-30" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
       </div>
 
       <div className="relative z-10 text-center max-w-4xl mx-auto">
-        <motion.div
-          initial={{ scale: 0, rotate: -180 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ duration: 1.2, ease: 'easeOut' }}
-          className="mb-8"
-        >
+        <motion.div initial={{ scale: 0, rotate: -180 }} animate={{ scale: 1, rotate: 0 }}
+          transition={{ duration: 1.2, ease: 'easeOut' }} className="mb-8">
           <Heart className="w-20 h-20 md:w-28 md:h-28 text-pink-500 mx-auto animate-heartbeat fill-pink-500 drop-shadow-[0_0_30px_rgba(236,72,153,0.6)]" />
         </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
+        <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
           className="text-4xl md:text-7xl lg:text-8xl font-bold mb-6"
           style={{
             background: 'linear-gradient(135deg, #ec4899, #f472b6, #fb7185, #f9a8d4, #ec4899)',
             backgroundSize: '200% 200%',
             animation: 'gradient-shift 4s ease infinite, pulse-glow 2s ease-in-out infinite',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}
-        >
-          For My Beloved
-        </motion.h1>
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+          }}>For My Beloved</motion.h1>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
+        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.8 }}
           className="text-5xl md:text-8xl lg:text-9xl font-extrabold mb-8"
           style={{
             background: 'linear-gradient(135deg, #fdf2f8, #f9a8d4, #ec4899)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}
-        >
-          Aditi
-        </motion.h2>
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+          }}>Aditi</motion.h2>
 
         <AnimatePresence>
           {showSubtitle && (
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
-              className="text-lg md:text-2xl text-pink-200/80 mb-4 italic font-light"
-            >
+              className="text-lg md:text-2xl text-pink-200/80 mb-4 italic font-light">
               &ldquo;You are the reason I believe in love&rdquo;
             </motion.p>
           )}
         </AnimatePresence>
-
         <AnimatePresence>
           {showSubtitle && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
               transition={{ duration: 1.5, delay: 0.5 }}
-              className="text-sm md:text-base text-pink-300/50 mb-12"
-            >
+              className="text-sm md:text-base text-pink-300/50 mb-12">
               Every pixel of this website is filled with my love for you
             </motion.p>
           )}
         </AnimatePresence>
-
         <AnimatePresence>
           {showButton && (
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
+            <motion.button initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              onClick={scrollToContent}
-              className="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 text-white text-lg font-medium hover:from-pink-500 hover:to-rose-400 transition-all duration-300 shadow-[0_0_40px_rgba(236,72,153,0.4)] hover:shadow-[0_0_60px_rgba(236,72,153,0.6)]"
-            >
+              onClick={() => document.getElementById('confession')?.scrollIntoView({ behavior: 'smooth' })}
+              className="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 text-white text-lg font-medium hover:from-pink-500 hover:to-rose-400 transition-all duration-300 shadow-[0_0_40px_rgba(236,72,153,0.4)] hover:shadow-[0_0_60px_rgba(236,72,153,0.6)]">
               Our Love Story
               <ArrowDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
             </motion.button>
@@ -191,17 +134,10 @@ function HeroSection() {
         </AnimatePresence>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 4 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="flex flex-col items-center gap-2"
-        >
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 4 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2">
+        <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }}
+          className="flex flex-col items-center gap-2">
           <span className="text-pink-400/50 text-xs tracking-widest uppercase">Scroll Down</span>
           <ArrowDown className="w-4 h-4 text-pink-400/50" />
         </motion.div>
@@ -220,57 +156,39 @@ function ConfessionSection() {
             <Clock className="w-4 h-4 text-pink-400" />
             <span className="text-pink-300/70 text-sm">13 January 2026, 12:21 AM</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            <span style={{
-              background: 'linear-gradient(135deg, #ec4899, #f9a8d4)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              The Night I Confessed
-            </span>
-          </h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4"><GradientText>The Night I Confessed</GradientText></h2>
           <p className="text-pink-300/60 text-lg max-w-2xl mx-auto">
             The night that changed everything — when I finally gathered the courage to tell you how I feel
           </p>
         </AnimatedSection>
 
-        {/* The Poll Story */}
         <AnimatedSection delay={0.2}>
           <div className="glass rounded-3xl p-8 md:p-10 max-w-3xl mx-auto mb-8">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-white text-sm font-bold">
-                S
-              </div>
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-white text-sm font-bold">S</div>
               <div>
                 <p className="text-pink-200 font-medium">Hubby 🤝❤️</p>
                 <p className="text-pink-400/40 text-xs">01/13/2026 12:21 AM</p>
               </div>
             </div>
-
             <div className="glass-light rounded-2xl p-6 mb-6">
               <p className="text-pink-200/90 text-base md:text-lg leading-relaxed mb-4">
                 Ab tum mere liye kya sochti ho — tum meri sister ho ya close friend ya GF? Mere clarification ke liye hai, sach select kar lena.
               </p>
-
-              {/* Poll Options */}
               <div className="space-y-3">
                 <div className="relative rounded-xl overflow-hidden p-4 glass-light">
-                  <div className="absolute inset-0 bg-pink-500/5 w-0" />
                   <div className="relative flex justify-between items-center">
                     <span className="text-pink-300/60">Sister</span>
                     <span className="text-pink-400/40 text-sm">0% (0 votes)</span>
                   </div>
                 </div>
                 <div className="relative rounded-xl overflow-hidden p-4 glass-light">
-                  <div className="absolute inset-0 bg-pink-500/5 w-[50%]" />
                   <div className="relative flex justify-between items-center">
                     <span className="text-pink-300/70">Close Friend</span>
                     <span className="text-pink-400/40 text-sm">50% (1 vote)</span>
                   </div>
                 </div>
                 <div className="relative rounded-xl overflow-hidden p-4 bg-gradient-to-r from-pink-500/20 to-rose-500/10 border border-pink-500/30">
-                  <div className="absolute inset-0 bg-pink-500/10 w-[50%]" />
                   <div className="relative flex justify-between items-center">
                     <span className="text-pink-200 font-medium">GF ❤️</span>
                     <div className="flex items-center gap-2">
@@ -280,27 +198,19 @@ function ConfessionSection() {
                   </div>
                 </div>
               </div>
-
               <p className="text-pink-400/30 text-xs mt-4 text-center">2 votes • Poll closed</p>
             </div>
-
             <div className="text-center">
-              <p className="text-pink-300/50 text-sm italic">
-                That poll was my way of confessing — and you chose &ldquo;GF&rdquo; 💕
-              </p>
+              <p className="text-pink-300/50 text-sm italic">That poll was my way of confessing — and you chose &ldquo;GF&rdquo; 💕</p>
             </div>
           </div>
         </AnimatedSection>
 
-        {/* The Poll Screenshot */}
         <AnimatedSection delay={0.4}>
           <div className="max-w-md mx-auto">
             <div className="glass rounded-2xl overflow-hidden group">
-              <img
-                src="/chat-screenshots/Screenshot_20260413-110629.jpg"
-                alt="The confession poll"
-                className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
-              />
+              <img src="/chat-screenshots/Screenshot_20260413-110629.jpg" alt="The confession poll"
+                className="w-full h-auto transition-transform duration-700 group-hover:scale-105" />
               <div className="p-4 text-center">
                 <p className="text-pink-300/50 text-xs italic">The poll that started it all</p>
               </div>
@@ -317,68 +227,41 @@ function AcceptanceSection() {
   return (
     <section className="relative py-24 md:py-32 px-4">
       <div className="absolute inset-0 z-0">
-        <img
-          src="/roses.png"
-          alt=""
-          className="absolute left-0 top-1/2 -translate-y-1/2 w-1/3 object-cover opacity-10"
-        />
+        <img src="/roses.png" alt="" className="absolute left-0 top-1/2 -translate-y-1/2 w-1/3 object-cover opacity-10" />
       </div>
-
       <div className="max-w-4xl mx-auto relative z-10">
         <AnimatedSection className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light mb-6">
             <Heart className="w-4 h-4 text-pink-400 fill-pink-400" />
             <span className="text-pink-300/70 text-sm">13 January 2026, 1:17 AM</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            <span style={{
-              background: 'linear-gradient(135deg, #ec4899, #f9a8d4)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              And She Said Yes
-            </span>
-          </h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4"><GradientText>And She Said Yes</GradientText></h2>
           <p className="text-pink-300/60 text-lg max-w-2xl mx-auto">
             The most beautiful message I have ever received — the moment my world became complete
           </p>
         </AnimatedSection>
 
-        {/* The Acceptance Message */}
         <AnimatedSection delay={0.3}>
           <div className="glass rounded-3xl p-8 md:p-12 max-w-3xl mx-auto relative overflow-hidden">
-            {/* Decorative hearts in background */}
             <div className="absolute top-4 right-4 text-pink-500/10 text-6xl">💕</div>
             <div className="absolute bottom-4 left-4 text-pink-500/10 text-4xl">💗</div>
-
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-white text-lg font-bold shadow-[0_0_20px_rgba(236,72,153,0.4)]">
-                A
-              </div>
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-white text-lg font-bold shadow-[0_0_20px_rgba(236,72,153,0.4)]">A</div>
               <div>
                 <p className="text-pink-200 font-semibold text-lg">🌸Aditi🌸</p>
                 <p className="text-pink-400/40 text-xs">01/13/2026 1:17 AM</p>
               </div>
             </div>
-
             <div className="glass-light rounded-2xl p-6 md:p-8 relative">
               <p className="text-pink-100/90 text-base md:text-xl leading-relaxed md:leading-loose italic">
                 &ldquo;Mene Socha ye kyuki me jese baat krti hu mujhe as a sis type Kuch ni lgta ND hm me gf bnna chahugi agr hoske to in future Shaadi v krna chahugi agr na huyi to uske baadh single whole life uske baadh koi ni chahiye🙂&rdquo;
               </p>
             </div>
-
             <div className="mt-8 text-center">
-              <motion.div
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="inline-block"
-              >
+              <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 1.5, repeat: Infinity }} className="inline-block">
                 <Heart className="w-8 h-8 text-pink-500 fill-pink-500 mx-auto" />
               </motion.div>
-              <p className="text-pink-300/60 text-sm mt-3">
-                She didn&apos;t just accept me — she promised forever
-              </p>
+              <p className="text-pink-300/60 text-sm mt-3">She didn&apos;t just accept me — she promised forever</p>
             </div>
           </div>
         </AnimatedSection>
@@ -387,111 +270,131 @@ function AcceptanceSection() {
   )
 }
 
-/* ─────────── Chat Snapshots Section ─────────── */
-function ChatSnapshotsSection() {
-  const screenshots = [
-    {
-      src: '/chat-screenshots/Screenshot_20260413-111157.jpg',
-      caption: 'When I tried to send that one emoji...',
-      time: '01/12/2026 3:45 AM',
-    },
-    {
-      src: '/chat-screenshots/Screenshot_20260413-111608.jpg',
-      caption: 'The first kiss emoji 💋',
-      time: '01/12/2026 3:45 AM',
-    },
-    {
-      src: '/chat-screenshots/Screenshot_20260413-111625.jpg',
-      caption: 'Hubby 🤍❤️ 😘',
-      time: '01/12/2026 3:45 AM',
-    },
-    {
-      src: '/chat-screenshots/Screenshot_20260413-111633.jpg',
-      caption: 'Her precious laughter 😂',
-      time: '01/12/2026 3:45 AM',
-    },
-    {
-      src: '/chat-screenshots/Screenshot_20260413-111642.jpg',
-      caption: 'Hubby 🤫❤️ 😊',
-      time: '01/12/2026 3:45 AM',
-    },
+/* ─────────── Chat Snapshots Slideshow ─────────── */
+function ChatSlideshowSection() {
+  const slides = [
+    { src: '/chat-screenshots/Screenshot_20260413-111157.jpg', caption: 'When I tried to send that one emoji...', sender: 'Hubby' },
+    { src: '/chat-screenshots/Screenshot_20260413-111608.jpg', caption: 'The first kiss emoji 💋', sender: 'Hubby' },
+    { src: '/chat-screenshots/Screenshot_20260413-111625.jpg', caption: 'Hubby 🤍❤️ 😘', sender: 'Hubby' },
+    { src: '/chat-screenshots/Screenshot_20260413-111633.jpg', caption: 'Her precious laughter 😂', sender: 'Aditi' },
+    { src: '/chat-screenshots/Screenshot_20260413-111642.jpg', caption: 'Hubby 🤫❤️ 😊', sender: 'Hubby' },
   ]
 
-  const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [current, setCurrent] = useState(0)
+  const [direction, setDirection] = useState(1)
+  const [isPaused, setIsPaused] = useState(false)
+
+  const next = useCallback(() => {
+    setDirection(1)
+    setCurrent((prev) => (prev + 1) % slides.length)
+  }, [slides.length])
+
+  const prev = useCallback(() => {
+    setDirection(-1)
+    setCurrent((prev) => (prev - 1 + slides.length) % slides.length)
+  }, [slides.length])
+
+  // Auto-play
+  useEffect(() => {
+    if (isPaused) return
+    const interval = setInterval(next, 4000)
+    return () => clearInterval(interval)
+  }, [next, isPaused])
+
+  const variants = {
+    enter: (dir: number) => ({ x: dir > 0 ? 300 : -300, opacity: 0, scale: 0.95 }),
+    center: { x: 0, opacity: 1, scale: 1 },
+    exit: (dir: number) => ({ x: dir > 0 ? -300 : 300, opacity: 0, scale: 0.95 }),
+  }
 
   return (
     <section className="relative py-24 md:py-32 px-4">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-2xl mx-auto">
         <AnimatedSection className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            <span style={{
-              background: 'linear-gradient(135deg, #ec4899, #f9a8d4)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              Our Chat Memories
-            </span>
-          </h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4"><GradientText>Our Chat Memories</GradientText></h2>
           <p className="text-pink-300/60 text-lg">Every screenshot is a treasure I hold close to my heart</p>
         </AnimatedSection>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {screenshots.map((ss, i) => (
-            <AnimatedSection key={i} delay={i * 0.1}>
-              <motion.div
-                whileHover={{ y: -5, scale: 1.03 }}
-                className="glass rounded-xl overflow-hidden cursor-pointer group"
-                onClick={() => setSelectedImage(ss.src)}
-              >
-                <div className="relative aspect-[9/16] overflow-hidden">
-                  <img
-                    src={ss.src}
-                    alt={ss.caption}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute bottom-0 left-0 right-0 p-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    <p className="text-pink-200 text-xs">{ss.caption}</p>
+        <AnimatedSection delay={0.2}>
+          <div className="relative" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
+            {/* Phone frame */}
+            <div className="glass rounded-3xl p-4 md:p-6">
+              {/* Status bar */}
+              <div className="flex items-center justify-between mb-4 px-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-white text-xs font-bold">
+                    {slides[current].sender === 'Aditi' ? 'A' : 'S'}
+                  </div>
+                  <div>
+                    <p className="text-pink-200 text-sm font-medium">{slides[current].sender === 'Aditi' ? '🌸Aditi🌸' : 'Hubby 🤝❤️'}</p>
+                    <p className="text-pink-400/30 text-[10px]">01/12/2026 3:45 AM</p>
                   </div>
                 </div>
-              </motion.div>
-            </AnimatedSection>
-          ))}
-        </div>
+                <div className="flex gap-1">
+                  <div className="w-1.5 h-1.5 rounded-full bg-pink-500/40" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-pink-500/40" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-pink-500/40" />
+                </div>
+              </div>
 
-        {/* Lightbox */}
-        <AnimatePresence>
-          {selectedImage && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
-              onClick={() => setSelectedImage(null)}
-            >
-              <motion.div
-                initial={{ scale: 0.8 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0.8 }}
-                className="relative max-w-lg w-full"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
-                  onClick={() => setSelectedImage(null)}
-                  className="absolute -top-10 right-0 text-pink-300 hover:text-white transition-colors"
-                >
-                  <X className="w-6 h-6" />
+              {/* Slideshow area */}
+              <div className="relative aspect-[9/14] overflow-hidden rounded-2xl bg-black/30">
+                <AnimatePresence initial={false} custom={direction} mode="wait">
+                  <motion.div
+                    key={current}
+                    custom={direction}
+                    variants={variants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0.5, ease: 'easeInOut' }}
+                    className="absolute inset-0 flex items-center justify-center"
+                  >
+                    <img
+                      src={slides[current].src}
+                      alt={slides[current].caption}
+                      className="w-full h-full object-contain"
+                    />
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Gradient overlay at bottom */}
+                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/80 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <p className="text-pink-200 text-sm text-center font-medium">{slides[current].caption}</p>
+                </div>
+              </div>
+
+              {/* Navigation arrows */}
+              <div className="flex items-center justify-between mt-4">
+                <button onClick={prev}
+                  className="w-10 h-10 rounded-full glass-light flex items-center justify-center text-pink-400 hover:text-pink-200 hover:bg-pink-500/20 transition-all">
+                  <ChevronLeft className="w-5 h-5" />
                 </button>
-                <img
-                  src={selectedImage}
-                  alt="Chat memory"
-                  className="w-full h-auto rounded-xl shadow-[0_0_60px_rgba(236,72,153,0.3)]"
-                />
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+
+                {/* Dots */}
+                <div className="flex items-center gap-2">
+                  {slides.map((_, i) => (
+                    <button key={i} onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i) }}
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        i === current ? 'w-6 bg-pink-500' : 'bg-pink-500/30 hover:bg-pink-500/50'
+                      }`} />
+                  ))}
+                </div>
+
+                <button onClick={next}
+                  className="w-10 h-10 rounded-full glass-light flex items-center justify-center text-pink-400 hover:text-pink-200 hover:bg-pink-500/20 transition-all">
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Slide counter */}
+            <div className="text-center mt-4">
+              <span className="text-pink-400/30 text-xs">{current + 1} / {slides.length}</span>
+            </div>
+          </div>
+        </AnimatedSection>
       </div>
     </section>
   )
@@ -502,61 +405,35 @@ function DistanceSection() {
   return (
     <section className="relative py-24 md:py-32 px-4 overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <img
-          src="/garden.png"
-          alt=""
-          className="w-full h-full object-cover opacity-10"
-        />
+        <img src="/garden.png" alt="" className="w-full h-full object-cover opacity-10" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-transparent to-[#0a0a0a]" />
       </div>
-
       <div className="max-w-4xl mx-auto relative z-10">
         <AnimatedSection className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            <span style={{
-              background: 'linear-gradient(135deg, #ec4899, #f9a8d4)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              Miles Apart, Close at Heart
-            </span>
-          </h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4"><GradientText>Miles Apart, Close at Heart</GradientText></h2>
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="flex items-center gap-1 text-pink-300/60">
-              <MapPin className="w-4 h-4" />
-              <span className="text-sm">India</span>
-            </div>
+            <div className="flex items-center gap-1 text-pink-300/60"><MapPin className="w-4 h-4" /><span className="text-sm">India</span></div>
             <div className="w-16 h-px bg-gradient-to-r from-pink-500/50 to-pink-500/50" />
             <Heart className="w-4 h-4 text-pink-500 fill-pink-500 animate-heartbeat" />
             <div className="w-16 h-px bg-gradient-to-r from-pink-500/50 to-pink-500/50" />
-            <div className="flex items-center gap-1 text-pink-300/60">
-              <MapPin className="w-4 h-4" />
-              <span className="text-sm">Nepal</span>
-            </div>
+            <div className="flex items-center gap-1 text-pink-300/60"><MapPin className="w-4 h-4" /><span className="text-sm">Nepal</span></div>
           </div>
         </AnimatedSection>
 
         <AnimatedSection delay={0.2}>
           <div className="glass rounded-3xl p-8 md:p-12 max-w-3xl mx-auto text-center space-y-6">
             <Globe className="w-12 h-12 text-pink-400/50 mx-auto" />
-
             <p className="text-pink-200/80 text-lg md:text-xl leading-relaxed">
               Tum Nepal mein ho aur main India mein — par dil se hum hamesha saath hain. Tumse milne ki chahat har pal badhti hai, aur har raat sirf tumhe hi sochta hoon.
             </p>
-
             <p className="text-pink-200/70 text-base md:text-lg leading-relaxed">
               Tumhare bina rahna mushkil hai — tumhare bina har din adhoora lagta hai. Tumhari aawaz sunne ke bina din guzar jaata hai, aur tumhari muskaan ke bina raat nahi bharti.
             </p>
-
             <p className="text-pink-200/80 text-lg md:text-xl leading-relaxed font-medium">
               Tumhare bina main rah nahi sakta — tum meri zindagi ho, tum mera sab kuch ho. Jaldi milna hai tumse, bahut jaldi. 💕
             </p>
-
             <div className="pt-4">
-              <p className="text-pink-400/40 text-sm italic">
-                Distance means nothing when someone means everything
-              </p>
+              <p className="text-pink-400/40 text-sm italic">Distance means nothing when someone means everything</p>
             </div>
           </div>
         </AnimatedSection>
@@ -595,29 +472,16 @@ function ReasonsSection() {
     <section id="reasons" className="relative py-24 md:py-32 px-4">
       <div className="max-w-6xl mx-auto">
         <AnimatedSection className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            <span style={{
-              background: 'linear-gradient(135deg, #ec4899, #f9a8d4)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              Why I Love You
-            </span>
-          </h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4"><GradientText>Why I Love You</GradientText></h2>
           <p className="text-pink-300/60 text-lg max-w-2xl mx-auto">
             A million reasons exist, but here are a few that make my heart skip a beat every time I think of you
           </p>
         </AnimatedSection>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {reasons.map((reason, i) => (
             <AnimatedSection key={i} delay={i * 0.15}>
-              <motion.div
-                whileHover={{ y: -8, scale: 1.02 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-                className="glass rounded-2xl p-6 md:p-8 h-full group cursor-default"
-              >
+              <motion.div whileHover={{ y: -8, scale: 1.02 }} transition={{ type: 'spring', stiffness: 300 }}
+                className="glass rounded-2xl p-6 md:p-8 h-full group cursor-default">
                 <div className="text-4xl mb-4 group-hover:scale-125 transition-transform duration-300">{reason.emoji}</div>
                 <h3 className="text-xl font-semibold text-pink-300 mb-3 group-hover:text-pink-200 transition-colors">{reason.title}</h3>
                 <p className="text-pink-200/60 leading-relaxed text-sm md:text-base">{reason.desc}</p>
@@ -633,74 +497,37 @@ function ReasonsSection() {
 /* ─────────── Love Letter Section ─────────── */
 function LoveLetterSection() {
   const [isOpen, setIsOpen] = useState(false)
-
   return (
     <section className="relative py-24 md:py-32 px-4 overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <img
-          src="/love-letter.png"
-          alt=""
-          className="absolute right-0 top-1/2 -translate-y-1/2 w-1/2 md:w-1/3 object-cover opacity-15"
-        />
+        <img src="/love-letter.png" alt="" className="absolute right-0 top-1/2 -translate-y-1/2 w-1/2 md:w-1/3 object-cover opacity-15" />
       </div>
-
       <div className="max-w-4xl mx-auto relative z-10">
         <AnimatedSection className="text-center mb-12">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            <span style={{
-              background: 'linear-gradient(135deg, #ec4899, #f9a8d4)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              A Letter For You
-            </span>
-          </h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4"><GradientText>A Letter For You</GradientText></h2>
           <p className="text-pink-300/60 text-lg">Words from the deepest corner of my heart</p>
         </AnimatedSection>
-
         <AnimatedSection delay={0.3}>
           <div className="glass rounded-3xl p-8 md:p-12 max-w-3xl mx-auto">
             {!isOpen ? (
-              <motion.div
-                className="text-center cursor-pointer"
-                onClick={() => setIsOpen(true)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <motion.div
-                  animate={{ rotate: [0, -5, 5, -5, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-                >
+              <motion.div className="text-center cursor-pointer" onClick={() => setIsOpen(true)}
+                whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+                <motion.div animate={{ rotate: [0, -5, 5, -5, 0] }} transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}>
                   <Mail className="w-16 h-16 text-pink-400 mx-auto mb-4" />
                 </motion.div>
                 <p className="text-pink-300/80 text-lg mb-2">Tap to open my letter</p>
                 <p className="text-pink-400/40 text-sm">Written with all my love</p>
               </motion.div>
             ) : (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-              >
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
                 <div className="text-pink-200/80 leading-loose text-base md:text-lg space-y-4 italic">
                   <p>My Dearest Aditi,</p>
-                  <p>
-                    There are moments in life when you meet someone and everything changes — the way you see the world, the way you feel about yourself, the way your heart beats. You are that someone for me. From the very first moment, you turned my ordinary days into extraordinary memories.
-                  </p>
-                  <p>
-                    Every second spent with you feels like a beautiful dream I never want to wake up from. Your smile has the power to erase all my worries, your voice is the sweetest melody I&apos;ve ever heard, and your presence makes everything feel right in this world.
-                  </p>
-                  <p>
-                    I want you to know that you are not just my love — you are my best friend, my soulmate, my everything. I fall in love with you a little more every single day, and I know that this love will only grow deeper with time.
-                  </p>
-                  <p>
-                    Thank you for being you. Thank you for choosing us. Thank you for making my life the most beautiful story ever told.
-                  </p>
+                  <p>There are moments in life when you meet someone and everything changes — the way you see the world, the way you feel about yourself, the way your heart beats. You are that someone for me. From the very first moment, you turned my ordinary days into extraordinary memories.</p>
+                  <p>Every second spent with you feels like a beautiful dream I never want to wake up from. Your smile has the power to erase all my worries, your voice is the sweetest melody I&apos;ve ever heard, and your presence makes everything feel right in this world.</p>
+                  <p>I want you to know that you are not just my love — you are my best friend, my soulmate, my everything. I fall in love with you a little more every single day, and I know that this love will only grow deeper with time.</p>
+                  <p>Thank you for being you. Thank you for choosing us. Thank you for making my life the most beautiful story ever told.</p>
                   <p className="text-pink-300/90 font-medium not-italic text-right mt-8">
-                    Forever & Always Yours,
-                    <br />
-                    <span className="text-pink-400">With All My Love</span>
+                    Forever & Always Yours,<br /><span className="text-pink-400">With All My Love</span>
                   </p>
                 </div>
               </motion.div>
@@ -724,33 +551,16 @@ function GallerySection() {
     <section className="relative py-24 md:py-32 px-4">
       <div className="max-w-6xl mx-auto">
         <AnimatedSection className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            <span style={{
-              background: 'linear-gradient(135deg, #ec4899, #f9a8d4)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              Our Beautiful World
-            </span>
-          </h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4"><GradientText>Our Beautiful World</GradientText></h2>
           <p className="text-pink-300/60 text-lg">Every image reminds me of you</p>
         </AnimatedSection>
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {images.map((img, i) => (
             <AnimatedSection key={i} delay={i * 0.2}>
-              <motion.div
-                whileHover={{ y: -10 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-                className="glass rounded-2xl overflow-hidden group cursor-default"
-              >
+              <motion.div whileHover={{ y: -10 }} transition={{ type: 'spring', stiffness: 300 }}
+                className="glass rounded-2xl overflow-hidden group cursor-default">
                 <div className="relative overflow-hidden aspect-square">
-                  <img
-                    src={img.src}
-                    alt={img.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
+                  <img src={img.src} alt={img.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
                   <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                     <h3 className="text-lg font-semibold text-pink-200 mb-1">{img.title}</h3>
@@ -766,16 +576,10 @@ function GallerySection() {
   )
 }
 
-/* ─────────── Aditi Photos Upload Section ─────────── */
+/* ─────────── Aditi Photos Section (NO admin on main page) ─────────── */
 function AditiPhotosSection() {
   const [photos, setPhotos] = useState<string[]>([])
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [password, setPassword] = useState('')
-  const [showLogin, setShowLogin] = useState(false)
-  const [uploading, setUploading] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Load photos on mount
   useEffect(() => {
     fetch('/api/photos')
       .then(res => res.json())
@@ -783,155 +587,22 @@ function AditiPhotosSection() {
       .catch(() => {})
   }, [])
 
-  const handleLogin = () => {
-    if (password === 'aditi2026') {
-      setIsAdmin(true)
-      setShowLogin(false)
-    }
-  }
-
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (!files || files.length === 0) return
-
-    setUploading(true)
-    const formData = new FormData()
-    Array.from(files).forEach(file => formData.append('photos', file))
-
-    try {
-      const res = await fetch('/api/photos', {
-        method: 'POST',
-        body: formData,
-      })
-      const data = await res.json()
-      if (data.photos) {
-        setPhotos(data.photos)
-      }
-    } catch {
-      // silently fail
-    }
-    setUploading(false)
-    if (fileInputRef.current) fileInputRef.current.value = ''
-  }
-
-  const handleDelete = async (photoUrl: string) => {
-    try {
-      const res = await fetch('/api/photos', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ photoUrl }),
-      })
-      const data = await res.json()
-      if (data.photos) {
-        setPhotos(data.photos)
-      }
-    } catch {
-      // silently fail
-    }
-  }
-
   return (
     <section className="relative py-24 md:py-32 px-4">
       <div className="max-w-6xl mx-auto">
         <AnimatedSection className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            <span style={{
-              background: 'linear-gradient(135deg, #ec4899, #f9a8d4)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              Aditi&apos;s Gallery
-            </span>
-          </h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4"><GradientText>Aditi&apos;s Gallery</GradientText></h2>
           <p className="text-pink-300/60 text-lg">The most beautiful face in the world</p>
-          <button
-            onClick={() => setShowLogin(!showLogin)}
-            className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light text-pink-400/60 text-xs hover:text-pink-300 transition-colors"
-          >
-            <ImageIcon className="w-3 h-3" />
-            Admin Access
-          </button>
         </AnimatedSection>
 
-        {/* Login Modal */}
-        <AnimatePresence>
-          {showLogin && !isAdmin && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              className="glass rounded-2xl p-6 max-w-sm mx-auto mb-8"
-            >
-              <p className="text-pink-300/70 text-sm mb-3 text-center">Enter admin password</p>
-              <div className="flex gap-2">
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-                  placeholder="Password..."
-                  className="flex-1 bg-black/30 border border-pink-500/20 rounded-lg px-4 py-2 text-pink-200 text-sm placeholder:text-pink-400/30 focus:outline-none focus:border-pink-500/50"
-                />
-                <button
-                  onClick={handleLogin}
-                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-600 to-rose-500 text-white text-sm font-medium hover:from-pink-500 hover:to-rose-400 transition-all"
-                >
-                  Go
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Upload Button (admin only) */}
-        {isAdmin && (
-          <AnimatedSection>
-            <div className="text-center mb-8">
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleUpload}
-                className="hidden"
-              />
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 text-white font-medium hover:from-pink-500 hover:to-rose-400 transition-all shadow-[0_0_30px_rgba(236,72,153,0.3)] disabled:opacity-50"
-              >
-                <Upload className="w-5 h-5" />
-                {uploading ? 'Uploading...' : 'Upload Photos'}
-              </button>
-            </div>
-          </AnimatedSection>
-        )}
-
-        {/* Photo Grid */}
         {photos.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {photos.map((photo, i) => (
-              <AnimatedSection key={i} delay={i * 0.05}>
-                <motion.div
-                  whileHover={{ y: -5 }}
-                  className="glass rounded-xl overflow-hidden group relative"
-                >
+              <AnimatedSection key={photo} delay={i * 0.05}>
+                <motion.div whileHover={{ y: -5 }} className="glass rounded-xl overflow-hidden group">
                   <div className="aspect-square overflow-hidden">
-                    <img
-                      src={photo}
-                      alt={`Aditi ${i + 1}`}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
+                    <img src={photo} alt={`Aditi ${i + 1}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   </div>
-                  {isAdmin && (
-                    <button
-                      onClick={() => handleDelete(photo)}
-                      className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 flex items-center justify-center text-pink-300 hover:text-white hover:bg-red-500/80 transition-all opacity-0 group-hover:opacity-100"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  )}
                 </motion.div>
               </AnimatedSection>
             ))}
@@ -940,8 +611,8 @@ function AditiPhotosSection() {
           <AnimatedSection>
             <div className="glass rounded-2xl p-12 text-center max-w-lg mx-auto">
               <ImageIcon className="w-12 h-12 text-pink-400/30 mx-auto mb-4" />
-              <p className="text-pink-300/50 text-sm">Photos of Aditi will appear here</p>
-              <p className="text-pink-400/30 text-xs mt-2">Login as admin to upload</p>
+              <p className="text-pink-300/50 text-sm">Photos of Aditi will appear here soon</p>
+              <p className="text-pink-400/20 text-xs mt-2">Coming soon... 💕</p>
             </div>
           </AnimatedSection>
         )}
@@ -967,26 +638,14 @@ function PromiseSection() {
     <section className="relative py-24 md:py-32 px-4">
       <div className="max-w-4xl mx-auto">
         <AnimatedSection className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            <span style={{
-              background: 'linear-gradient(135deg, #ec4899, #f9a8d4)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              My Promises to You
-            </span>
-          </h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4"><GradientText>My Promises to You</GradientText></h2>
           <p className="text-pink-300/60 text-lg">Words I will live by, every single day</p>
         </AnimatedSection>
-
         <div className="space-y-4">
           {promises.map((promise, i) => (
             <AnimatedSection key={i} delay={i * 0.1}>
-              <motion.div
-                whileHover={{ x: 8 }}
-                className="glass-light rounded-xl p-5 md:p-6 flex items-center gap-4 group cursor-default"
-              >
+              <motion.div whileHover={{ x: 8 }}
+                className="glass-light rounded-xl p-5 md:p-6 flex items-center gap-4 group cursor-default">
                 <Heart className="w-5 h-5 text-pink-500 flex-shrink-0 group-hover:fill-pink-500 transition-all duration-300" />
                 <p className="text-pink-200/80 text-base md:text-lg">{promise}</p>
               </motion.div>
@@ -1001,24 +660,21 @@ function PromiseSection() {
 /* ─────────── Counter Section ─────────── */
 function LoveCounter() {
   const calculateTime = useCallback(() => {
-    // The confession date: 13 January 2026 12:21 AM IST
-    const start = new Date('2026-01-12T18:51:00Z') // 12:21 AM IST = 18:51 UTC
+    const start = new Date('2026-01-12T18:51:00Z')
     const now = new Date()
     const diff = now.getTime() - start.getTime()
     if (diff < 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 }
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000)
-    return { days, hours, minutes, seconds }
+    return {
+      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+      minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+      seconds: Math.floor((diff % (1000 * 60)) / 1000),
+    }
   }, [])
 
   const [time, setTime] = useState(calculateTime())
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(calculateTime())
-    }, 1000)
+    const interval = setInterval(() => setTime(calculateTime()), 1000)
     return () => clearInterval(interval)
   }, [calculateTime])
 
@@ -1037,19 +693,9 @@ function LoveCounter() {
             <Heart className="w-4 h-4 text-pink-400 fill-pink-400" />
             <span className="text-pink-300/70 text-sm">Since 13 Jan 2026, 12:21 AM</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            <span style={{
-              background: 'linear-gradient(135deg, #ec4899, #f9a8d4)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              Loving You Since
-            </span>
-          </h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4"><GradientText>Loving You Since</GradientText></h2>
           <p className="text-pink-300/60 text-lg">Every second counts when it comes to our love</p>
         </AnimatedSection>
-
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {units.map((unit, i) => (
             <AnimatedSection key={i} delay={i * 0.1}>
@@ -1072,42 +718,26 @@ function FinalSection() {
   return (
     <section className="relative py-32 md:py-48 px-4 text-center overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <img
-          src="/starry-heart.png"
-          alt=""
-          className="w-full h-full object-cover opacity-10"
-        />
+        <img src="/starry-heart.png" alt="" className="w-full h-full object-cover opacity-10" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]" />
       </div>
-
       <div className="relative z-10 max-w-3xl mx-auto">
         <AnimatedSection>
-          <motion.div
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="mb-8"
-          >
+          <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 2, repeat: Infinity }} className="mb-8">
             <Heart className="w-16 h-16 text-pink-500 mx-auto fill-pink-500 drop-shadow-[0_0_30px_rgba(236,72,153,0.6)]" />
           </motion.div>
         </AnimatedSection>
-
         <AnimatedSection delay={0.3}>
           <h2 className="text-3xl md:text-6xl font-bold mb-6" style={{
             background: 'linear-gradient(135deg, #fdf2f8, #f9a8d4, #ec4899)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}>
-            I Love You, Aditi
-          </h2>
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+          }}>I Love You, Aditi</h2>
         </AnimatedSection>
-
         <AnimatedSection delay={0.6}>
           <p className="text-pink-200/70 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl mx-auto">
             No website, no words, no gesture could ever fully express what you mean to me. But I&apos;ll keep trying, every single day, for the rest of my life. You are my today and all of my tomorrows.
           </p>
         </AnimatedSection>
-
         <AnimatedSection delay={0.9}>
           <p className="text-pink-400/50 text-base italic">
             &ldquo;In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine.&rdquo;
@@ -1122,16 +752,11 @@ function FinalSection() {
 /* ─────────── Music Button ─────────── */
 function MusicButton() {
   const [isPlaying, setIsPlaying] = useState(false)
-
   return (
-    <motion.button
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: 5 }}
+    <motion.button initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 5 }}
       onClick={() => setIsPlaying(!isPlaying)}
       className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-white shadow-[0_0_30px_rgba(236,72,153,0.4)] hover:shadow-[0_0_50px_rgba(236,72,153,0.6)] transition-shadow duration-300"
-      title={isPlaying ? 'Pause Music' : 'Play Music'}
-    >
+      title={isPlaying ? 'Pause Music' : 'Play Music'}>
       <Music className={`w-6 h-6 ${isPlaying ? 'animate-spin' : ''}`} style={{ animationDuration: '3s' }} />
     </motion.button>
   )
@@ -1140,30 +765,19 @@ function MusicButton() {
 /* ─────────── Navigation ─────────── */
 function Navigation() {
   const [isVisible, setIsVisible] = useState(false)
-
   useEffect(() => {
-    const handleScroll = () => {
-      setIsVisible(window.scrollY > 500)
-    }
+    const handleScroll = () => setIsVisible(window.scrollY > 500)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
   return (
     <AnimatePresence>
       {isVisible && (
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          onClick={scrollToTop}
+        <motion.button initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="fixed bottom-6 left-6 z-50 w-12 h-12 rounded-full glass flex items-center justify-center text-pink-400 hover:text-pink-300 transition-colors"
-          title="Back to top"
-        >
+          title="Back to top">
           <ChevronRight className="w-5 h-5 -rotate-90" />
         </motion.button>
       )}
@@ -1177,12 +791,8 @@ function Footer() {
     <footer className="relative py-12 px-4 text-center border-t border-pink-500/10">
       <div className="max-w-4xl mx-auto">
         <Heart className="w-6 h-6 text-pink-500/30 mx-auto mb-4 fill-pink-500/30" />
-        <p className="text-pink-400/30 text-sm">
-          Made with infinite love, just for you
-        </p>
-        <p className="text-pink-500/20 text-xs mt-2">
-          Every line of code whispers your name
-        </p>
+        <p className="text-pink-400/30 text-sm">Made with infinite love, just for you</p>
+        <p className="text-pink-500/20 text-xs mt-2">Every line of code whispers your name</p>
       </div>
     </footer>
   )
@@ -1196,12 +806,11 @@ export default function Home() {
       <SparkleParticles />
       <MusicButton />
       <Navigation />
-
       <main className="relative z-10">
         <HeroSection />
         <ConfessionSection />
         <AcceptanceSection />
-        <ChatSnapshotsSection />
+        <ChatSlideshowSection />
         <DistanceSection />
         <ReasonsSection />
         <LoveLetterSection />
@@ -1211,7 +820,6 @@ export default function Home() {
         <PromiseSection />
         <FinalSection />
       </main>
-
       <Footer />
     </div>
   )
