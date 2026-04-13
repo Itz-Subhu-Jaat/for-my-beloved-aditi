@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { Heart, Star, Sparkles, Mail, Clock, ArrowDown, Music, X, ChevronRight } from 'lucide-react'
+import { Heart, Star, Sparkles, Mail, Clock, ArrowDown, Music, ChevronRight, Upload, MapPin, Image as ImageIcon, X, Globe, MessageCircle } from 'lucide-react'
 
 /* ─────────── Floating Hearts Background ─────────── */
 function FloatingHearts() {
@@ -93,12 +93,11 @@ function HeroSection() {
   }, [])
 
   const scrollToContent = () => {
-    document.getElementById('reasons')?.scrollIntoView({ behavior: 'smooth' })
+    document.getElementById('confession')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-4">
-      {/* Background image with overlay */}
       <div className="absolute inset-0 z-0">
         <img
           src="/hero-image.png"
@@ -108,7 +107,6 @@ function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
       </div>
 
-      {/* Content */}
       <div className="relative z-10 text-center max-w-4xl mx-auto">
         <motion.div
           initial={{ scale: 0, rotate: -180 }}
@@ -123,7 +121,7 @@ function HeroSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
-          className="text-4xl md:text-7xl lg:text-8xl font-bold mb-6 animate-pulse-glow"
+          className="text-4xl md:text-7xl lg:text-8xl font-bold mb-6"
           style={{
             background: 'linear-gradient(135deg, #ec4899, #f472b6, #fb7185, #f9a8d4, #ec4899)',
             backgroundSize: '200% 200%',
@@ -186,14 +184,13 @@ function HeroSection() {
               onClick={scrollToContent}
               className="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 text-white text-lg font-medium hover:from-pink-500 hover:to-rose-400 transition-all duration-300 shadow-[0_0_40px_rgba(236,72,153,0.4)] hover:shadow-[0_0_60px_rgba(236,72,153,0.6)]"
             >
-              Explore Our Love Story
+              Our Love Story
               <ArrowDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
             </motion.button>
           )}
         </AnimatePresence>
       </div>
 
-      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -209,6 +206,376 @@ function HeroSection() {
           <ArrowDown className="w-4 h-4 text-pink-400/50" />
         </motion.div>
       </motion.div>
+    </section>
+  )
+}
+
+/* ─────────── The Confession Section ─────────── */
+function ConfessionSection() {
+  return (
+    <section id="confession" className="relative py-24 md:py-32 px-4">
+      <div className="max-w-4xl mx-auto">
+        <AnimatedSection className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light mb-6">
+            <Clock className="w-4 h-4 text-pink-400" />
+            <span className="text-pink-300/70 text-sm">13 January 2026, 12:21 AM</span>
+          </div>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+            <span style={{
+              background: 'linear-gradient(135deg, #ec4899, #f9a8d4)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>
+              The Night I Confessed
+            </span>
+          </h2>
+          <p className="text-pink-300/60 text-lg max-w-2xl mx-auto">
+            The night that changed everything — when I finally gathered the courage to tell you how I feel
+          </p>
+        </AnimatedSection>
+
+        {/* The Poll Story */}
+        <AnimatedSection delay={0.2}>
+          <div className="glass rounded-3xl p-8 md:p-10 max-w-3xl mx-auto mb-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-white text-sm font-bold">
+                S
+              </div>
+              <div>
+                <p className="text-pink-200 font-medium">Hubby 🤝❤️</p>
+                <p className="text-pink-400/40 text-xs">01/13/2026 12:21 AM</p>
+              </div>
+            </div>
+
+            <div className="glass-light rounded-2xl p-6 mb-6">
+              <p className="text-pink-200/90 text-base md:text-lg leading-relaxed mb-4">
+                Ab tum mere liye kya sochti ho — tum meri sister ho ya close friend ya GF? Mere clarification ke liye hai, sach select kar lena.
+              </p>
+
+              {/* Poll Options */}
+              <div className="space-y-3">
+                <div className="relative rounded-xl overflow-hidden p-4 glass-light">
+                  <div className="absolute inset-0 bg-pink-500/5 w-0" />
+                  <div className="relative flex justify-between items-center">
+                    <span className="text-pink-300/60">Sister</span>
+                    <span className="text-pink-400/40 text-sm">0% (0 votes)</span>
+                  </div>
+                </div>
+                <div className="relative rounded-xl overflow-hidden p-4 glass-light">
+                  <div className="absolute inset-0 bg-pink-500/5 w-[50%]" />
+                  <div className="relative flex justify-between items-center">
+                    <span className="text-pink-300/70">Close Friend</span>
+                    <span className="text-pink-400/40 text-sm">50% (1 vote)</span>
+                  </div>
+                </div>
+                <div className="relative rounded-xl overflow-hidden p-4 bg-gradient-to-r from-pink-500/20 to-rose-500/10 border border-pink-500/30">
+                  <div className="absolute inset-0 bg-pink-500/10 w-[50%]" />
+                  <div className="relative flex justify-between items-center">
+                    <span className="text-pink-200 font-medium">GF ❤️</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-pink-300 text-sm">50% (1 vote)</span>
+                      <span className="text-green-400 text-lg">✓</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <p className="text-pink-400/30 text-xs mt-4 text-center">2 votes • Poll closed</p>
+            </div>
+
+            <div className="text-center">
+              <p className="text-pink-300/50 text-sm italic">
+                That poll was my way of confessing — and you chose &ldquo;GF&rdquo; 💕
+              </p>
+            </div>
+          </div>
+        </AnimatedSection>
+
+        {/* The Poll Screenshot */}
+        <AnimatedSection delay={0.4}>
+          <div className="max-w-md mx-auto">
+            <div className="glass rounded-2xl overflow-hidden group">
+              <img
+                src="/chat-screenshots/Screenshot_20260413-110629.jpg"
+                alt="The confession poll"
+                className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="p-4 text-center">
+                <p className="text-pink-300/50 text-xs italic">The poll that started it all</p>
+              </div>
+            </div>
+          </div>
+        </AnimatedSection>
+      </div>
+    </section>
+  )
+}
+
+/* ─────────── The Acceptance Section ─────────── */
+function AcceptanceSection() {
+  return (
+    <section className="relative py-24 md:py-32 px-4">
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/roses.png"
+          alt=""
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-1/3 object-cover opacity-10"
+        />
+      </div>
+
+      <div className="max-w-4xl mx-auto relative z-10">
+        <AnimatedSection className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light mb-6">
+            <Heart className="w-4 h-4 text-pink-400 fill-pink-400" />
+            <span className="text-pink-300/70 text-sm">13 January 2026, 1:17 AM</span>
+          </div>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+            <span style={{
+              background: 'linear-gradient(135deg, #ec4899, #f9a8d4)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>
+              And She Said Yes
+            </span>
+          </h2>
+          <p className="text-pink-300/60 text-lg max-w-2xl mx-auto">
+            The most beautiful message I have ever received — the moment my world became complete
+          </p>
+        </AnimatedSection>
+
+        {/* The Acceptance Message */}
+        <AnimatedSection delay={0.3}>
+          <div className="glass rounded-3xl p-8 md:p-12 max-w-3xl mx-auto relative overflow-hidden">
+            {/* Decorative hearts in background */}
+            <div className="absolute top-4 right-4 text-pink-500/10 text-6xl">💕</div>
+            <div className="absolute bottom-4 left-4 text-pink-500/10 text-4xl">💗</div>
+
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-white text-lg font-bold shadow-[0_0_20px_rgba(236,72,153,0.4)]">
+                A
+              </div>
+              <div>
+                <p className="text-pink-200 font-semibold text-lg">🌸Aditi🌸</p>
+                <p className="text-pink-400/40 text-xs">01/13/2026 1:17 AM</p>
+              </div>
+            </div>
+
+            <div className="glass-light rounded-2xl p-6 md:p-8 relative">
+              <p className="text-pink-100/90 text-base md:text-xl leading-relaxed md:leading-loose italic">
+                &ldquo;Mene Socha ye kyuki me jese baat krti hu mujhe as a sis type Kuch ni lgta ND hm me gf bnna chahugi agr hoske to in future Shaadi v krna chahugi agr na huyi to uske baadh single whole life uske baadh koi ni chahiye🙂&rdquo;
+              </p>
+            </div>
+
+            <div className="mt-8 text-center">
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="inline-block"
+              >
+                <Heart className="w-8 h-8 text-pink-500 fill-pink-500 mx-auto" />
+              </motion.div>
+              <p className="text-pink-300/60 text-sm mt-3">
+                She didn&apos;t just accept me — she promised forever
+              </p>
+            </div>
+          </div>
+        </AnimatedSection>
+      </div>
+    </section>
+  )
+}
+
+/* ─────────── Chat Snapshots Section ─────────── */
+function ChatSnapshotsSection() {
+  const screenshots = [
+    {
+      src: '/chat-screenshots/Screenshot_20260413-111157.jpg',
+      caption: 'When I tried to send that one emoji...',
+      time: '01/12/2026 3:45 AM',
+    },
+    {
+      src: '/chat-screenshots/Screenshot_20260413-111608.jpg',
+      caption: 'The first kiss emoji 💋',
+      time: '01/12/2026 3:45 AM',
+    },
+    {
+      src: '/chat-screenshots/Screenshot_20260413-111625.jpg',
+      caption: 'Hubby 🤍❤️ 😘',
+      time: '01/12/2026 3:45 AM',
+    },
+    {
+      src: '/chat-screenshots/Screenshot_20260413-111633.jpg',
+      caption: 'Her precious laughter 😂',
+      time: '01/12/2026 3:45 AM',
+    },
+    {
+      src: '/chat-screenshots/Screenshot_20260413-111642.jpg',
+      caption: 'Hubby 🤫❤️ 😊',
+      time: '01/12/2026 3:45 AM',
+    },
+  ]
+
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
+
+  return (
+    <section className="relative py-24 md:py-32 px-4">
+      <div className="max-w-6xl mx-auto">
+        <AnimatedSection className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+            <span style={{
+              background: 'linear-gradient(135deg, #ec4899, #f9a8d4)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>
+              Our Chat Memories
+            </span>
+          </h2>
+          <p className="text-pink-300/60 text-lg">Every screenshot is a treasure I hold close to my heart</p>
+        </AnimatedSection>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {screenshots.map((ss, i) => (
+            <AnimatedSection key={i} delay={i * 0.1}>
+              <motion.div
+                whileHover={{ y: -5, scale: 1.03 }}
+                className="glass rounded-xl overflow-hidden cursor-pointer group"
+                onClick={() => setSelectedImage(ss.src)}
+              >
+                <div className="relative aspect-[9/16] overflow-hidden">
+                  <img
+                    src={ss.src}
+                    alt={ss.caption}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute bottom-0 left-0 right-0 p-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <p className="text-pink-200 text-xs">{ss.caption}</p>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatedSection>
+          ))}
+        </div>
+
+        {/* Lightbox */}
+        <AnimatePresence>
+          {selectedImage && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+              onClick={() => setSelectedImage(null)}
+            >
+              <motion.div
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.8 }}
+                className="relative max-w-lg w-full"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setSelectedImage(null)}
+                  className="absolute -top-10 right-0 text-pink-300 hover:text-white transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+                <img
+                  src={selectedImage}
+                  alt="Chat memory"
+                  className="w-full h-auto rounded-xl shadow-[0_0_60px_rgba(236,72,153,0.3)]"
+                />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </section>
+  )
+}
+
+/* ─────────── Nepal-India Distance Section ─────────── */
+function DistanceSection() {
+  return (
+    <section className="relative py-24 md:py-32 px-4 overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/garden.png"
+          alt=""
+          className="w-full h-full object-cover opacity-10"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-transparent to-[#0a0a0a]" />
+      </div>
+
+      <div className="max-w-4xl mx-auto relative z-10">
+        <AnimatedSection className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+            <span style={{
+              background: 'linear-gradient(135deg, #ec4899, #f9a8d4)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>
+              Miles Apart, Close at Heart
+            </span>
+          </h2>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="flex items-center gap-1 text-pink-300/60">
+              <MapPin className="w-4 h-4" />
+              <span className="text-sm">India</span>
+            </div>
+            <div className="w-16 h-px bg-gradient-to-r from-pink-500/50 to-pink-500/50" />
+            <Heart className="w-4 h-4 text-pink-500 fill-pink-500 animate-heartbeat" />
+            <div className="w-16 h-px bg-gradient-to-r from-pink-500/50 to-pink-500/50" />
+            <div className="flex items-center gap-1 text-pink-300/60">
+              <MapPin className="w-4 h-4" />
+              <span className="text-sm">Nepal</span>
+            </div>
+          </div>
+        </AnimatedSection>
+
+        <AnimatedSection delay={0.2}>
+          <div className="glass rounded-3xl p-8 md:p-12 max-w-3xl mx-auto text-center space-y-6">
+            <Globe className="w-12 h-12 text-pink-400/50 mx-auto" />
+
+            <p className="text-pink-200/80 text-lg md:text-xl leading-relaxed">
+              Tum Nepal mein ho aur main India mein — par dil se hum hamesha saath hain. Tumse milne ki chahat har pal badhti hai, aur har raat sirf tumhe hi sochta hoon.
+            </p>
+
+            <p className="text-pink-200/70 text-base md:text-lg leading-relaxed">
+              Tumhare bina rahna mushkil hai — tumhare bina har din adhoora lagta hai. Tumhari aawaz sunne ke bina din guzar jaata hai, aur tumhari muskaan ke bina raat nahi bharti.
+            </p>
+
+            <p className="text-pink-200/80 text-lg md:text-xl leading-relaxed font-medium">
+              Tumhare bina main rah nahi sakta — tum meri zindagi ho, tum mera sab kuch ho. Jaldi milna hai tumse, bahut jaldi. 💕
+            </p>
+
+            <div className="pt-4">
+              <p className="text-pink-400/40 text-sm italic">
+                Distance means nothing when someone means everything
+              </p>
+            </div>
+          </div>
+        </AnimatedSection>
+
+        <AnimatedSection delay={0.4}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+            <div className="glass rounded-2xl p-6 text-center">
+              <MapPin className="w-8 h-8 text-pink-400 mx-auto mb-3" />
+              <h3 className="text-pink-300 font-semibold mb-2">She is in Nepal</h3>
+              <p className="text-pink-200/50 text-sm">But she lives in my heart, always</p>
+            </div>
+            <div className="glass rounded-2xl p-6 text-center">
+              <Heart className="w-8 h-8 text-pink-400 mx-auto mb-3 fill-pink-400" />
+              <h3 className="text-pink-300 font-semibold mb-2">I am in India</h3>
+              <p className="text-pink-200/50 text-sm">But my soul wanders to where she is</p>
+            </div>
+          </div>
+        </AnimatedSection>
+      </div>
     </section>
   )
 }
@@ -269,7 +636,6 @@ function LoveLetterSection() {
 
   return (
     <section className="relative py-24 md:py-32 px-4 overflow-hidden">
-      {/* Background decoration */}
       <div className="absolute inset-0 z-0">
         <img
           src="/love-letter.png"
@@ -400,18 +766,73 @@ function GallerySection() {
   )
 }
 
-/* ─────────── Timeline Section ─────────── */
-function TimelineSection() {
-  const timeline = [
-    { icon: <Star className="w-5 h-5" />, title: 'The First Glance', desc: 'The moment I saw you, I knew my life was about to change forever. Something in your eyes told me this was different — this was real.' },
-    { icon: <Sparkles className="w-5 h-5" />, title: 'Falling in Love', desc: 'Every conversation, every shared laugh, every moment together — I found myself falling deeper and deeper. Love wasn\'t sudden; it was a beautiful, inevitable journey.' },
-    { icon: <Heart className="w-5 h-5" />, title: 'You Became My World', desc: 'Somewhere along the way, you became not just a part of my life, but my entire world. Every thought, every dream, every plan somehow includes you.' },
-    { icon: <Mail className="w-5 h-5" />, title: 'This Website', desc: 'I built this with my own hands, line by line, pixel by pixel — because you deserve something made with love, effort, and dedication. Just for you, Aditi.' },
-  ]
+/* ─────────── Aditi Photos Upload Section ─────────── */
+function AditiPhotosSection() {
+  const [photos, setPhotos] = useState<string[]>([])
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [password, setPassword] = useState('')
+  const [showLogin, setShowLogin] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Load photos on mount
+  useEffect(() => {
+    fetch('/api/photos')
+      .then(res => res.json())
+      .then(data => { if (data.photos) setPhotos(data.photos) })
+      .catch(() => {})
+  }, [])
+
+  const handleLogin = () => {
+    if (password === 'aditi2026') {
+      setIsAdmin(true)
+      setShowLogin(false)
+    }
+  }
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files || files.length === 0) return
+
+    setUploading(true)
+    const formData = new FormData()
+    Array.from(files).forEach(file => formData.append('photos', file))
+
+    try {
+      const res = await fetch('/api/photos', {
+        method: 'POST',
+        body: formData,
+      })
+      const data = await res.json()
+      if (data.photos) {
+        setPhotos(data.photos)
+      }
+    } catch {
+      // silently fail
+    }
+    setUploading(false)
+    if (fileInputRef.current) fileInputRef.current.value = ''
+  }
+
+  const handleDelete = async (photoUrl: string) => {
+    try {
+      const res = await fetch('/api/photos', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ photoUrl }),
+      })
+      const data = await res.json()
+      if (data.photos) {
+        setPhotos(data.photos)
+      }
+    } catch {
+      // silently fail
+    }
+  }
 
   return (
     <section className="relative py-24 md:py-32 px-4">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <AnimatedSection className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
             <span style={{
@@ -420,42 +841,110 @@ function TimelineSection() {
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}>
-              Our Story
+              Aditi&apos;s Gallery
             </span>
           </h2>
-          <p className="text-pink-300/60 text-lg">A love story that keeps getting better</p>
+          <p className="text-pink-300/60 text-lg">The most beautiful face in the world</p>
+          <button
+            onClick={() => setShowLogin(!showLogin)}
+            className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light text-pink-400/60 text-xs hover:text-pink-300 transition-colors"
+          >
+            <ImageIcon className="w-3 h-3" />
+            Admin Access
+          </button>
         </AnimatedSection>
 
-        <div className="relative">
-          {/* Timeline line */}
-          <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-pink-500/80 via-pink-400/40 to-transparent md:-translate-x-px" />
-
-          {timeline.map((item, i) => (
-            <AnimatedSection
-              key={i}
-              delay={i * 0.2}
-              className={`relative flex items-start gap-6 mb-12 ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+        {/* Login Modal */}
+        <AnimatePresence>
+          {showLogin && !isAdmin && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="glass rounded-2xl p-6 max-w-sm mx-auto mb-8"
             >
-              {/* Icon */}
-              <div className="absolute left-6 md:left-1/2 -translate-x-1/2 z-10">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-white shadow-[0_0_20px_rgba(236,72,153,0.5)]">
-                  {item.icon}
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className={`ml-20 md:ml-0 md:w-[calc(50%-40px)] ${i % 2 === 0 ? 'md:pr-8 md:text-right' : 'md:pl-8 md:text-left'}`}>
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  className="glass rounded-xl p-6"
+              <p className="text-pink-300/70 text-sm mb-3 text-center">Enter admin password</p>
+              <div className="flex gap-2">
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+                  placeholder="Password..."
+                  className="flex-1 bg-black/30 border border-pink-500/20 rounded-lg px-4 py-2 text-pink-200 text-sm placeholder:text-pink-400/30 focus:outline-none focus:border-pink-500/50"
+                />
+                <button
+                  onClick={handleLogin}
+                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-600 to-rose-500 text-white text-sm font-medium hover:from-pink-500 hover:to-rose-400 transition-all"
                 >
-                  <h3 className="text-lg font-semibold text-pink-300 mb-2">{item.title}</h3>
-                  <p className="text-pink-200/60 text-sm leading-relaxed">{item.desc}</p>
-                </motion.div>
+                  Go
+                </button>
               </div>
-            </AnimatedSection>
-          ))}
-        </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Upload Button (admin only) */}
+        {isAdmin && (
+          <AnimatedSection>
+            <div className="text-center mb-8">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleUpload}
+                className="hidden"
+              />
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 text-white font-medium hover:from-pink-500 hover:to-rose-400 transition-all shadow-[0_0_30px_rgba(236,72,153,0.3)] disabled:opacity-50"
+              >
+                <Upload className="w-5 h-5" />
+                {uploading ? 'Uploading...' : 'Upload Photos'}
+              </button>
+            </div>
+          </AnimatedSection>
+        )}
+
+        {/* Photo Grid */}
+        {photos.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {photos.map((photo, i) => (
+              <AnimatedSection key={i} delay={i * 0.05}>
+                <motion.div
+                  whileHover={{ y: -5 }}
+                  className="glass rounded-xl overflow-hidden group relative"
+                >
+                  <div className="aspect-square overflow-hidden">
+                    <img
+                      src={photo}
+                      alt={`Aditi ${i + 1}`}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  </div>
+                  {isAdmin && (
+                    <button
+                      onClick={() => handleDelete(photo)}
+                      className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 flex items-center justify-center text-pink-300 hover:text-white hover:bg-red-500/80 transition-all opacity-0 group-hover:opacity-100"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </motion.div>
+              </AnimatedSection>
+            ))}
+          </div>
+        ) : (
+          <AnimatedSection>
+            <div className="glass rounded-2xl p-12 text-center max-w-lg mx-auto">
+              <ImageIcon className="w-12 h-12 text-pink-400/30 mx-auto mb-4" />
+              <p className="text-pink-300/50 text-sm">Photos of Aditi will appear here</p>
+              <p className="text-pink-400/30 text-xs mt-2">Login as admin to upload</p>
+            </div>
+          </AnimatedSection>
+        )}
       </div>
     </section>
   )
@@ -470,6 +959,8 @@ function PromiseSection() {
     'I promise to choose you, every single day, for the rest of my life.',
     'I promise that my love for you will only grow with time.',
     'I promise to build a life with you that\'s worth remembering.',
+    'I promise to come to Nepal and meet you, no matter what it takes.',
+    'I promise to never let the distance weaken what we have.',
   ]
 
   return (
@@ -510,10 +1001,11 @@ function PromiseSection() {
 /* ─────────── Counter Section ─────────── */
 function LoveCounter() {
   const calculateTime = useCallback(() => {
-    // A symbolic start date - can be customized
-    const start = new Date('2024-01-01T00:00:00')
+    // The confession date: 13 January 2026 12:21 AM IST
+    const start = new Date('2026-01-12T18:51:00Z') // 12:21 AM IST = 18:51 UTC
     const now = new Date()
     const diff = now.getTime() - start.getTime()
+    if (diff < 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 }
     const days = Math.floor(diff / (1000 * 60 * 60 * 24))
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
@@ -541,6 +1033,10 @@ function LoveCounter() {
     <section className="relative py-24 md:py-32 px-4">
       <div className="max-w-4xl mx-auto">
         <AnimatedSection className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light mb-6">
+            <Heart className="w-4 h-4 text-pink-400 fill-pink-400" />
+            <span className="text-pink-300/70 text-sm">Since 13 Jan 2026, 12:21 AM</span>
+          </div>
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
             <span style={{
               background: 'linear-gradient(135deg, #ec4899, #f9a8d4)',
@@ -703,10 +1199,14 @@ export default function Home() {
 
       <main className="relative z-10">
         <HeroSection />
+        <ConfessionSection />
+        <AcceptanceSection />
+        <ChatSnapshotsSection />
+        <DistanceSection />
         <ReasonsSection />
         <LoveLetterSection />
         <GallerySection />
-        <TimelineSection />
+        <AditiPhotosSection />
         <LoveCounter />
         <PromiseSection />
         <FinalSection />
